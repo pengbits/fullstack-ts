@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@common/*": ["../common/*"]
+    },
+    "rootDirs": [
+      "./src",
+      "../shared"
+    ]
+  }
+}

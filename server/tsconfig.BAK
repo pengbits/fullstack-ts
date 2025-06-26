@@ -1,0 +1,13 @@
+{
+  "outDir": "./dist",
+  "compilerOptions": {
+    "esModuleInterop":true,
+    "paths": {
+      "@common/*": ["../common/*"]
+    },
+    "rootDirs": [
+      "./src",
+      "../shared"
+    ],
+  }
+}
