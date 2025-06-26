@@ -7,6 +7,6 @@ describe('App', () => {
     render(<App />)
 
     const h1 = await screen.findByText('Ahoy')
-    console.log(h1)
+    expect(h1).toBeInTheDocument()
   })
 })
