@@ -1,0 +1,14 @@
+{
+  "name": "fullstack-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently 'cd client && npm run dev' 'cd server && npm run start'"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
