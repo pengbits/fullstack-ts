@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch 'src/**' --ext 'ts,json' --exec 'ts-node src/index.ts'",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "author": "",
   "license": "ISC",
