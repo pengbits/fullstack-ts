@@ -16,4 +16,16 @@ router.get('/parking-session', (req:Request,res:Response) => {
   res.json(mock)
 })
 
+router.post('/parking-sessions', (req:Request,res:Response) => {
+  try {
+    res.status(201)
+    res.json({
+      success: true,
+      parking_session: {}
+    })
+  } catch (error){
+    console.log(error)
+  }
+})
+
 export default router
