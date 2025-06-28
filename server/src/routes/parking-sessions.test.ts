@@ -1,5 +1,5 @@
 import request from "supertest"
-import {expectAttributes} from '../../.jest/testUtils'
+import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
 
 describe('parking-sessions', () => {
@@ -25,7 +25,7 @@ describe('parking-sessions', () => {
         .set('Accept', 'application/json')
       expect(response.status).toBe(201)
       expectAttributes(response.body.parking_session, [
-        'id','meter_id','start_time','duration','price'
+        'id','car_id','meter_id','meter_location','start_time','end_time','cost'
       ])
     })
   })

@@ -15,7 +15,8 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(cors())
-app.use('/api', routes.parkingSessions)
+app.use('/api',         routes.parkingSessions)
+app.use('/api/meters',  routes.meters)
 
 
 export default app
