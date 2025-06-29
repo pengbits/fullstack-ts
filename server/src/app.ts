@@ -2,17 +2,13 @@ import express, {Request,Response} from "express";
 import bodyParser from "body-parser";
 import logger from 'morgan'
 import cors from 'cors'
-import path from 'path'
 import routes from "./routes";
-const isProd = process.env.NODE_ENV == "production"
-const configPath = path.join(__dirname, '..', isProd ? '.env.prod':'.env.local');
-// console.log(`isProd?${isProd} config:${configPath}`)
-import {config} from 'dotenv'
-config({ path: configPath})
+import env from "./env"; env()
+
 
 const app = express()
-
 app.get('/api', (req:Request, res:Response) => {
+  console.log(process.env.PGUSER)
   res.json({
     "greeting":"Ahoy!"
   })
