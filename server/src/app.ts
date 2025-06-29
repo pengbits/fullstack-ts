@@ -6,7 +6,7 @@ import path from 'path'
 import routes from "./routes";
 const isProd = process.env.NODE_ENV == "production"
 const configPath = path.join(__dirname, '..', isProd ? '.env.prod':'.env.local');
-console.log(`isProd?${isProd} config:${configPath}`)
+// console.log(`isProd?${isProd} config:${configPath}`)
 import {config} from 'dotenv'
 config({ path: configPath})
 

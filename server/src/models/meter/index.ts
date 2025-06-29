@@ -1,15 +1,19 @@
 import { Point } from "../geo";
+import pool from "../../db/pool";
 
-const sql = `
-SELECT *
-FROM meters
-WHERE ST_DWithin(meters.geo, ST_MakePoint(40.645635,-73.9509129)::geography, 1000)
-ORDER BY meters.geo <-> ST_MakePoint(lat,long)::geography;`
+
 
 class Meter {  
-  static withinRange (center:Point, radius:number){
-    console.log(`Meter::withinRange`, center, radius)
-    return []
+  static  async withinRange (center:Point, radius:number){
+    const sql = `
+    SELECT *
+    FROM meters
+    WHERE ST_DWithin(meters.geo, ST_MakePoint($1,$2)::geography, $3)
+    ORDER BY meters.geo <-> ST_MakePoint(lat,long)::geography;`
+    console.log(sql, [center.lat,center.lon,radius])
+
+    const result = await pool.query(sql, [center.lat,center.lon,radius])
+    return result.rows
   }
 }
 

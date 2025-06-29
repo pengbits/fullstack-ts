@@ -2,26 +2,18 @@ import Meter from "./meter"
 
 describe('Meter', () => {
   describe('withinRange(point, radius)', () => {
-    test('it returns Meters in the range described', () => {
+    test('it returns Meters in the range described', async () => {
       const our_house = {lat:40.645635,lon:-73.9509129}
-      const radius_meters = 1000
-      const meters = Meter.withinRange(our_house, radius_meters)
-      // TODO
-      // construct a query to find the meters that fall within
-      // the circle described by point, radius
-      // to do this with geography type look at
-      // https://stackoverflow.com/questions/37827468/find-the-nearest-location-by-latitude-and-longitude-in-postgresql
-      const sql = `
-      SELECT *
-      FROM meters
-      WHERE ST_DWithin(meters.geo, ST_MakePoint(40.645635,-73.9509129)::geography, 1000)
-      ORDER BY meters.geo <-> ST_MakePoint(lat,long)::geography;`
+      const radius_meters = 200
+      const meters = await Meter.withinRange(our_house, radius_meters)
+      expect(meters.length).toBe(7)
+      const meter = meters[0]
 
-      expect(meters).toEqual(expect.arrayContaining([{
-        pay_by_cell_number:335108,
-        on_street:'Nostrand Avenue',
-        side_of_street:'E'
-      }]))
+      expect(meter.meter_number).toBe('3163027')
+      expect(meter.side_of_street).toBe('N')
+      expect(meter.on_street).toBe('CHURCH AVENUE')
+      expect(meter.lat).toBe(40.6508226226069)
+      expect(meter.long).toBe(-73.9505230216675)
     })
   })
 })
