@@ -1,4 +1,4 @@
-import { Meter } from "./meter"
+import Meter from "./meter"
 
 describe('Meter', () => {
   describe('withinRange(point, radius)', () => {
@@ -11,6 +11,12 @@ describe('Meter', () => {
       // the circle described by point, radius
       // to do this with geography type look at
       // https://stackoverflow.com/questions/37827468/find-the-nearest-location-by-latitude-and-longitude-in-postgresql
+      const sql = `
+      SELECT *
+      FROM meters
+      WHERE ST_DWithin(meters.geo, ST_MakePoint(40.645635,-73.9509129)::geography, 1000)
+      ORDER BY meters.geo <-> ST_MakePoint(lat,long)::geography;`
+
       expect(meters).toEqual(expect.arrayContaining([{
         pay_by_cell_number:335108,
         on_street:'Nostrand Avenue',
