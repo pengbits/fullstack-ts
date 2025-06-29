@@ -1,2 +1,2 @@
 add aliasing to frontend so we can mock components with @/src/components/whatever
-start with raw sql calls and see how far we get before jumping to sequelize/typeORM, we don't have many associations in our  models
+add types to Meter object in model and route
