@@ -16,4 +16,21 @@ describe('Meter', () => {
       expect(meter.long).toBe(-73.9505230216675)
     })
   })
+  describe('find(valid_id)', () => {
+    it('finds the meter for the meter_number provided', async () => {
+      const meter = await Meter.find('3163027')
+      expect(meter.meter_number).toBe('3163027')
+    })
+  })
+
+  describe('find(bad_id)', () => {
+    it('returns an error when an invalid meter_number is provided', async () => {
+      try {
+        await Meter.find('555555')
+      } catch (error:any){
+        expect(error.message).toMatch(/^expected 1 rows for/)
+      }
+    })
+  })
+
 })

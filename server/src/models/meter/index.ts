@@ -4,6 +4,16 @@ import { MeterAttributes } from "../../types/MeterAttributes";
 import {QueryResultRow} from 'pg'
 
 class Meter {  
+  static async find(id:string):Promise<MeterAttributes> {
+    const sql = `
+    SELECT * FROM meters WHERE meter_number=$1`
+    console.log(sql, [id])
+    const result = await pool.query(sql, [id])
+    if(result.rows.length !== 1) throw new Error(`expected 1 rows for meter_number:${id}, found:${result.rows.length}`)
+    
+    return this.serializeRow(result.rows[0])
+  }
+
   static async withinRange (center:Point, radius:number){
     const sql = `
     SELECT *
