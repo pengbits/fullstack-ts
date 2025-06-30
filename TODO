@@ -1,2 +1,2 @@
 add aliasing to frontend so we can mock components with @/src/components/whatever
-add types to Meter object in model and route
+fix env var bootstrapping!

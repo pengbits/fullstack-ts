@@ -3,12 +3,11 @@ import bodyParser from "body-parser";
 import logger from 'morgan'
 import cors from 'cors'
 import routes from "./routes";
-import env from "./env"; env()
+
 
 
 const app = express()
 app.get('/api', (req:Request, res:Response) => {
-  console.log(process.env.PGUSER)
   res.json({
     "greeting":"Ahoy!"
   })

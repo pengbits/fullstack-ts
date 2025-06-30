@@ -1,10 +1,13 @@
 import express, {Request,Response} from 'express';
 import CreateParkingSessionMock from '../mocks/CreateParkingSession';
 import GetParkingSessionMock from '../mocks/GetParkingSession'
+import ParkingSession from '../models/parking-session'
 
 const router = express.Router();
 
 router.get('/parking-session', (req:Request,res:Response) => {
+
+  const p = new ParkingSession()
   res.json(GetParkingSessionMock)
 })
 
