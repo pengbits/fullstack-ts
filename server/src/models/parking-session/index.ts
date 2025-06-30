@@ -1,13 +1,9 @@
 import pool from "../../db/pool"
-import dayjs from 'dayjs'
 
 import ParkingSessionAttributes from "../../types/ParkingSessionAttributes"
 import ParkingSessionParams from "../../types/ParkingSessionParams"
 import Meter from "../meter"
-
-const toTimestamp = (date:any) => {
-  return dayjs(date).format('MM-DD-YYYY HH:mm:ss')
-}
+import { toDate, toTimestamp } from "../../utils/date"
 
 class ParkingSession {
 
@@ -19,7 +15,7 @@ class ParkingSession {
     
     try {
       const meter = await Meter.find(attrs.meter_number)
-      const start = dayjs(attrs.start)
+      const start = toDate(attrs.start)
       const end   = start.add(attrs.duration, 'minute')
       
       const sql = `
