@@ -5,7 +5,6 @@ import cors from 'cors'
 import routes from "./routes";
 
 
-
 const app = express()
 app.get('/api', (req:Request, res:Response) => {
   res.json({

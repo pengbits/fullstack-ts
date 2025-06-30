@@ -6,7 +6,7 @@ const isProd = process.env.NODE_ENV == "production"
 // setup env vars since dotenv doesn't want to work in our ts-node environment
 function parseConfig():EnvType {
   const configPath = path.join(__dirname, !isProd ? '.env.local' : '.env.prod')
-  console.log(`|env| isProd:${isProd} config:${configPath}`)
+  // console.log(`|env| isProd:${isProd} config:${configPath}`)
   const configData = readFileSync(configPath , {encoding:'utf8', flag:'r'})
   let env_:any = {}
   env_.PROD = isProd
@@ -22,7 +22,7 @@ function parseConfig():EnvType {
 let env_:EnvType;
 function bootstrap():EnvType{
   if(!env_) {
-    console.log('|env| env object null, bootstrapping')
+    // console.log('|env| env object null, bootstrapping')
     env_ = parseConfig()
   }
   return env_

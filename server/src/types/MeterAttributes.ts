@@ -5,3 +5,4 @@ export interface MeterAttributes {
   lat: number,
   long: number,
 }
+export default MeterAttributes
