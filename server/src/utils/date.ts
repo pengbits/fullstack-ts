@@ -1,3 +1,4 @@
+// TODO share this with frontend
 import dayjs from "dayjs"
 
 export const toTimestamp = (date:any) => {
