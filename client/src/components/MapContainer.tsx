@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Map, useMap} from '@vis.gl/react-google-maps';
+import {Map, Marker, useMap} from '@vis.gl/react-google-maps';
 import useMapBounds from '../hooks/useMapBounds';
 import useFetch from '../hooks/useFetch';
 
@@ -8,6 +8,19 @@ import {
   getSearchRadiusFromDimensions 
 } from '../util/geo';
 import type {Bounds} from '../types/geo'
+
+
+const Markers = ({data}) => {
+  if(data && data.meters && data.meters.length) {
+    return data.meters.map(({lat,long}) => {
+      return <Marker position={{
+        lat,
+        lng:long
+      }}></Marker>
+    })
+  }
+  return null
+}
 
 
 export interface MapContainerProps {
@@ -39,7 +52,8 @@ const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
   } = useFetch(url)
 
   useMapBounds({map,onChange})
-  if(isSuccess) console.log(`found ${data.meters.length} meters!`)
+  if(isSuccess && data && data.meters) console.log(`found ${data.meters.length} meters!`)
+  
   return (<>
     {isError && <div className='errors'>{error}</div>}
     <Map
@@ -48,7 +62,9 @@ const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
       defaultZoom={zoom || 15}
       gestureHandling={'greedy'}
       disableDefaultUI={true}
-    />
+    >
+      <Markers data={data} />
+    </Map>
     </>
   )
 }

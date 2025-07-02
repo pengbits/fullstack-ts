@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 
-const useFetch = (url:string, opts:any={method:'GET'}) => {
+interface useFetchHookReturnType {
+  isLoading: boolean,
+  isError: boolean,
+  isSuccess: boolean,
+  data: any,
+  error: any
+}
+
+const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState()
   const [error, setError] = useState(false)
