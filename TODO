@@ -1,2 +1,3 @@
 add aliasing to frontend so we can mock components with @/src/components/whatever
 fix env var bootstrapping!
+reduce noise in map by rendering the count of meters in an alternate marker style, at certain zooms where the individual meters are colliding 
