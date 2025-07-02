@@ -1,6 +1,6 @@
 import {useEffect } from 'react';
 import {Map, useMap} from '@vis.gl/react-google-maps';
-import {getRadiusFromBounds} from '../util/geo'
+import {getDimensionsFromBounds} from '../util/geo'
 
 export interface MapContainerProps {
   lat: number,
@@ -24,10 +24,10 @@ const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
           sw: { lat: sw.lat(), lng: sw.lng() }
         })
         const center_ = {lat: center?.lat(), lon:center?.lng()}
-        console.log('radius', getRadiusFromBounds({
+        console.log('dimens', getDimensionsFromBounds({
           ne: { lat: ne.lat(), lon: ne.lng() },
           sw: { lat: sw.lat(), lon: sw.lng() }
-        }), center_)
+        }), 'center:',center_)
       }
     });
   },[map])

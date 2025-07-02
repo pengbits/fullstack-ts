@@ -17,9 +17,10 @@ export const measure = (p1:Point, p2:Point) => {
 }
 
 import type { Bounds } from "../types/geo/bounds";
-export const getRadiusFromBounds = ({ne,sw}:Bounds) => {
-  const width  = measure({lat:sw.lat, lon:ne.lon},{lat:ne.lat, lon:ne.lon})
-  const height = measure({lat:ne.lat, lon:ne.lon},{lat:ne.lat, lon:sw.lon})
-  const largest= Math.max(width, height)
-  return largest
+export const getDimensionsFromBounds = ({ne,sw}:Bounds) => {
+  const width  = Math.floor(measure({lat:sw.lat, lon:ne.lon},{lat:ne.lat, lon:ne.lon}))
+  const height = Math.floor(measure({lat:ne.lat, lon:ne.lon},{lat:ne.lat, lon:sw.lon}))
+  return {
+    width,height
+  }
 }

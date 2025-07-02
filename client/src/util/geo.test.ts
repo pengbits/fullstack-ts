@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest'
-import { measure, getRadiusFromBounds } from "./geo"
+import { measure, getDimensionsFromBounds } from "./geo"
 
 describe('geo', () => {
   describe('measure(p1,p2)', () => {
@@ -15,12 +15,12 @@ describe('geo', () => {
     })
   })
 
-  describe('getRadiusFromBounds(ne,sw) => {center,radius})', () => {
-    it('returns the center and radius for the map bounds', () => {
+  describe('getDimensionsFromBounds(ne,sw) => {center,radius})', () => {
+    it('returns the width and height, in meters, for the map bounds', () => {
       const ne= {lat: 40.666822352797524, lon: -73.92826744964952}
       const sw= {lat: 40.628530455207326, lon: -73.99817654541368}
-      const r = getRadiusFromBounds({ne,sw})
-      console.log(r)
+      const dimensions = getDimensionsFromBounds({ne,sw})
+      expect(dimensions).toEqual({ width: 4257, height: 5896 })
     })
   })
 })
