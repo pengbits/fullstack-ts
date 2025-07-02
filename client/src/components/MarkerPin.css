@@ -1,0 +1,21 @@
+.marker-pin {
+  position: relative;
+  background-color: rgb(1, 1, 190);
+  color: #FFF;
+  font-size: 10px;
+  padding: 8px 10px;
+  border-radius: 15px;
+  height: 10px;
+}
+
+.marker-pin .tail {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -18px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 24px solid rgb(1, 1, 190);
+}

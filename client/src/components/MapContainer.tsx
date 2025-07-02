@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
-import {Map, Marker, useMap} from '@vis.gl/react-google-maps';
+import { useState } from 'react';
+import {
+  Map, 
+  useMap
+} from '@vis.gl/react-google-maps';
 import useMapBounds from '../hooks/useMapBounds';
 import useFetch from '../hooks/useFetch';
 
@@ -9,27 +12,16 @@ import {
 } from '../util/geo';
 import type {Bounds} from '../types/geo'
 
-
-const Markers = ({data}) => {
-  if(data && data.meters && data.meters.length) {
-    return data.meters.map(({lat,long}) => {
-      return <Marker position={{
-        lat,
-        lng:long
-      }}></Marker>
-    })
-  }
-  return null
-}
-
+import Markers from './Markers';
 
 export interface MapContainerProps {
   lat: number,
   lon: number,
-  zoom?:number
+  zoom?:number,
+  mapId?:string
 }
 
-const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
+const MapContainer = ({lat,lon,zoom,mapId}:MapContainerProps) => {
   const map = useMap()
   const [url, setUrl] = useState('')
 
@@ -40,23 +32,20 @@ const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
 
     if(!center) return
     setUrl(`/api/meters/${center.lat()},${center.lng()}/${radius}`)
-    console.log(url)
-
   }
 
   const {
     data,
     isError,
-    isSuccess,
     error
   } = useFetch(url)
 
   useMapBounds({map,onChange})
-  if(isSuccess && data && data.meters) console.log(`found ${data.meters.length} meters!`)
   
   return (<>
     {isError && <div className='errors'>{error}</div>}
     <Map
+      mapId={mapId}
       style={{width: '100vw', height: '100vh'}}
       defaultCenter={{lat,lng:lon}}
       defaultZoom={zoom || 15}
