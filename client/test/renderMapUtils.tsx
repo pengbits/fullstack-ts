@@ -1,17 +1,11 @@
-import './App.css'
-
-// import { useEffect } from 'react'
-
+import {render,act} from '@testing-library/react'
 import {APIProvider} from '@vis.gl/react-google-maps';
-import MapPage from './pages/Map';
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY
 
-function App() {
-  return (
+export const renderWithMapAPI = async (View:any) => {
+  return await render(
     <APIProvider apiKey={API_KEY as string} onLoad={() => console.log('Maps API has loaded.')}>
-      <MapPage />
-    </APIProvider>
+      <View />
+    </APIProvider>  
   )
 }
-
-export default App
