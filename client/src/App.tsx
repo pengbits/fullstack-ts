@@ -12,7 +12,7 @@ function App() {
       <MapPage 
         lat={40.6488136}
         lon={-73.9602228}
-        zoom={17}
+        zoom={15}
       />
     </APIProvider>
   )

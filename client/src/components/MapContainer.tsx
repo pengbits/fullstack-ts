@@ -1,9 +1,13 @@
-import {useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {Map, useMap} from '@vis.gl/react-google-maps';
-import {
-  getDimensionsFromBounds,
-  getSearchRadiusFromDimensions
-} from '../util/geo'
+import useMapBounds from '../hooks/useMapBounds';
+import { 
+  getDimensionsFromBounds, 
+  getSearchRadiusFromDimensions 
+} from '../util/geo';
+import type {Bounds} from '../types/geo'
+import type { Point } from '../types/geo/point';
+
 
 export interface MapContainerProps {
   lat: number,
@@ -13,29 +17,19 @@ export interface MapContainerProps {
 
 const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
   const map = useMap()
-  
-  useEffect(() => {
-    if(!map) return
-    map.addListener('bounds_changed', () => {
-      const bounds = map.getBounds();
-      if (bounds) {
-        const ne = bounds.getNorthEast();
-        const sw = bounds.getSouthWest();
-        const center = map.getCenter()
-        console.log('Viewable Area:', {
-          ne: { lat: ne.lat(), lng: ne.lng() },
-          sw: { lat: sw.lat(), lng: sw.lng() }
-        })
-        const center_ = {lat: center?.lat(), lon:center?.lng()}
-        const dimens = getDimensionsFromBounds({
-          ne: { lat: ne.lat(), lon: ne.lng() },
-          sw: { lat: sw.lat(), lon: sw.lng() }
-        })
-        console.log(dimens, 'center:',center_)
-        console.log('radius:', getSearchRadiusFromDimensions(dimens))
-      }
-    });
-  },[map])
+
+  const onChange = (bounds:Bounds) => {
+    const dimens = getDimensionsFromBounds(bounds)
+    const radius = getSearchRadiusFromDimensions(dimens)
+    const center = map?.getCenter()
+
+    if(!center) return
+    const url = `/api/meters/${center.lat()},${center.lng()}/${radius}`
+    console.log(url)
+
+  }
+
+  useMapBounds({map,onChange})
 
   return (
     <Map
