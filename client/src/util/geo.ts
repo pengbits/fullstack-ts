@@ -18,9 +18,14 @@ export const measure = (p1:Point, p2:Point) => {
 
 import type { Bounds } from "../types/geo/bounds";
 export const getDimensionsFromBounds = ({ne,sw}:Bounds) => {
-  const width  = Math.floor(measure({lat:sw.lat, lon:ne.lon},{lat:ne.lat, lon:ne.lon}))
-  const height = Math.floor(measure({lat:ne.lat, lon:ne.lon},{lat:ne.lat, lon:sw.lon}))
+  const width = Math.floor(measure({lat:ne.lat, lon:ne.lon},{lat:ne.lat, lon:sw.lon}))
+  const height  = Math.floor(measure({lat:sw.lat, lon:ne.lon},{lat:ne.lat, lon:ne.lon}))
   return {
     width,height
   }
+}
+
+export const getSearchRadiusFromDimensions = ({width,height}:any) => {
+  const largest= Math.max(width, height)
+  return Math.floor(largest / 2)
 }
