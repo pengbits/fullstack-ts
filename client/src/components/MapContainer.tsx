@@ -1,16 +1,42 @@
-import {Map} from '@vis.gl/react-google-maps';
+import {useEffect } from 'react';
+import {Map, useMap} from '@vis.gl/react-google-maps';
+import {getRadiusFromBounds} from '../util/geo'
 
-interface MapContainerProps {
+export interface MapContainerProps {
   lat: number,
-  lon: number
+  lon: number,
+  zoom?:number
 }
 
-const MapContainer = ({lat,lon}:MapContainerProps) => {
+const MapContainer = ({lat,lon,zoom}:MapContainerProps) => {
+  const map = useMap()
+  
+  useEffect(() => {
+    if(!map) return
+    map.addListener('bounds_changed', () => {
+      const bounds = map.getBounds();
+      if (bounds) {
+        const ne = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const center = map.getCenter()
+        console.log('Viewable Area:', {
+          ne: { lat: ne.lat(), lng: ne.lng() },
+          sw: { lat: sw.lat(), lng: sw.lng() }
+        })
+        const center_ = {lat: center?.lat(), lon:center?.lng()}
+        console.log('radius', getRadiusFromBounds({
+          ne: { lat: ne.lat(), lon: ne.lng() },
+          sw: { lat: sw.lat(), lon: sw.lng() }
+        }), center_)
+      }
+    });
+  },[map])
+
   return (
     <Map
         style={{width: '100vw', height: '100vh'}}
         defaultCenter={{lat,lng:lon}}
-        defaultZoom={15}
+        defaultZoom={zoom || 15}
         gestureHandling={'greedy'}
         disableDefaultUI={true}
       />

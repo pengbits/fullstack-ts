@@ -1,8 +1,10 @@
 import MapContainer from "../components/MapContainer"
+import {type MapContainerProps} from '../components/MapContainer'
 
-export default () => (
+export default (props:MapContainerProps) => {
+  return (
   <MapContainer 
-    lat={40.645344}
-    lon={-73.9617345}
+    {...props}
   />
-)
+  )
+}
