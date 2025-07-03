@@ -16,7 +16,7 @@ const router = createBrowserRouter([
       index:true,
       Component: MapPage
     },{
-      path:'/sessions/new',
+      path:'/sessions/new/:meter_number',
       Component: NewSessionPage
     },{
       path:'/sessions/checkout',
