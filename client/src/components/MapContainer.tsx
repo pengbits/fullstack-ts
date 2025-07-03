@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import {
-  Map, 
-  useMap
-} from '@vis.gl/react-google-maps';
+import {Map, useMap} from '@vis.gl/react-google-maps';
 import useMapBounds from '../hooks/useMapBounds';
 import useFetch from '../hooks/useFetch';
 
@@ -10,6 +7,7 @@ import {
   getDimensionsFromBounds, 
   getSearchRadiusFromDimensions 
 } from '../util/geo';
+
 import type {Bounds} from '../types/geo'
 
 import Markers from './Markers';
