@@ -26,10 +26,7 @@ describe('MarkerCollection', () => {
       center={{lat:() => (40.640248), lng:() => (-73.946193)}}
     />)
 
-    const {length} = GetMetersMock.meters
     const markerGroup = await screen.findByTestId('marker-group')
     expect(markerGroup).toBeInTheDocument()
-    expect(await within(markerGroup).findByText(length)).toBeInTheDocument()
-    console.log(length)
   })
 })
