@@ -1,7 +1,7 @@
 import { loadEnv } from 'vite'
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
-
+import path from "path"
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
   const {
@@ -17,7 +17,8 @@ export default defineConfig(({mode}) => {
     resolve: {
       alias: {
         '@vis.gl/react-google-maps/examples.js':
-          'https://visgl.github.io/react-google-maps/scripts/examples.js'
+          'https://visgl.github.io/react-google-maps/scripts/examples.js',
+        "@": path.resolve(__dirname, "src")
       }
     },
     server: {
@@ -28,7 +29,9 @@ export default defineConfig(({mode}) => {
         }
       }
     },
-    plugins: [react()],
+    plugins: [
+      react()
+    ],
     test: {
       environment: "jsdom",
       setupFiles: ['./test/testSetup.ts']

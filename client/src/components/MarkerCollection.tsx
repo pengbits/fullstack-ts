@@ -1,5 +1,5 @@
 import Marker from "./Marker"
-import MarkerGroup from './MarkerGroup.tsx'
+import MarkerGroup from '@/components/MarkerGroup'
 import type { MetersResponse } from "../types/api/MetersResponse"
 import type { MeterAttributes } from '../types/api/MeterAttributes';
 
