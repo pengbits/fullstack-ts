@@ -34,7 +34,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   }
   
   const onZoomChanged = (zoom_:number) => {
-    console.log(`onZoomChanged: ${zoom_}`)
+    // console.log(`onZoomChanged: ${zoom_}`)
   }
 
   const {

@@ -4,6 +4,9 @@ import type { Point } from "@/types/geo/point";
 
 export const aggregate = (meters:Array<MeterAttributes>) => {
   console.log(`aggregate ${meters.length} meters into groups`)
+  // iterate over the collection,
+  // and build a map where the keys are lat and long values,
+  // in order to get them into geo order
   return []
 }
 const minium_distance_to_merge = 50
