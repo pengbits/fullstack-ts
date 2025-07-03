@@ -7,7 +7,7 @@ const Marker = ({meter_number,lat,long}:MeterAttributes) => (<AdvancedMarker
     position={{lat,lng:long}}
     clickable={true}
   >
-  <MarkerPin meter_number={meter_number} />
+  <MarkerPin label={meter_number} showTail={true} />
 </AdvancedMarker>)
 
 export default Marker

@@ -20,7 +20,7 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
       }
       opts.headers =  {"Content-Type": "application/json"}
       setLoading(true)
-      console.log(url, opts)
+      // console.log(url, opts)
       const response = await fetch(url, opts)
       const json = await response.json()
       setData(json)

@@ -1,5 +1,4 @@
 add aliasing to frontend so we can mock components with @/src/components/whatever
-fix env var bootstrapping!
 reduce noise in map by rendering the count of meters in an alternate marker style, at certain zooms where the individual meters are colliding 
 this should probably happen at the API level, instead of just returning Meters,
 there could be type:meter_group, count:6 or whatever

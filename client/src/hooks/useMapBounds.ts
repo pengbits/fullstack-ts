@@ -23,9 +23,9 @@ export default ({map,onChange}:useMapBoundsParams) => {
 
   useEffect(() => {
     if(!map) return
-
-    map.addListener('bounds_changed', onBoundsChanged)
+    let listener = map.addListener('bounds_changed', onBoundsChanged)
     return () => {
+      google.maps.event.removeListener(listener)
     }
   },
   [map])

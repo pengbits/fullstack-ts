@@ -11,7 +11,7 @@ function App() {
       <MapPage 
         lat={40.6488136}
         lon={-73.9602228}
-        zoom={15}
+        defaultZoom={15}
         mapId={process.env.GOOGLE_MAPS_MAP_ID}
       />
     </APIProvider>
