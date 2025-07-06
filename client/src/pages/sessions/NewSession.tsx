@@ -21,7 +21,7 @@ const NewSessionPage = () => {
     duration: 10
   })
   
-  const handleChangeDuration = (e:) => {
+  const handleChangeDuration = (e:React.ChangeEvent<HTMLSelectElement>) => {
     const i = e.target.selectedIndex
     const d = duration_options[i]
     setAttrs({
