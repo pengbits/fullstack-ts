@@ -1,15 +1,25 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "react-router"
+import useFetch from "@/hooks/useFetch"
+import { costForDuration, duration_options} from "@/util/meters"
+import { prettyPrice } from "@/util/string"
+import type { CreateParkingSessionParams } from "@/types/api/CreateParkingSessionParams"
 
-const duration_options = [10,20,30,40,50,60,72,84,90,102,114,120]
-const cost_per_hour = 150
+// const createSession = (attrs:CreateParkingSessionParams) => {
+const createSession =async (attrs:any) => {
+  try {
+    const res = await fetch("/api/parking-sessions", {
+      method:'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(attrs)
+    })
+    const json = await res.json()
+    return json
+  } catch(e:any){
+    console.log(e)
+  }
+}
 
-const costForDuration = (minutes:number) => {
-  return (minutes / 60) * cost_per_hour
-}
-const costPretty = (cents:number) => {
-  return `$${(Math.round(cents)/ 100).toFixed(2)}`
-}
 
 const NewSessionPage = () => {
   const params = useParams()
@@ -31,11 +41,14 @@ const NewSessionPage = () => {
     })
   }
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('submit')
     console.log(`POST /api/sessions/`, attrs)
+    const res = await createSession(attrs)
+    console.log(res)
   }
+  
 
   return (<div
     style={{padding:'15px'}}
@@ -54,7 +67,7 @@ const NewSessionPage = () => {
       </p>
       <p>
         <b>Cost</b><br />
-        {costPretty(attrs.cost)}
+        {prettyPrice(attrs.cost)}
       </p>
       <p>
         <input type="submit"></input>
