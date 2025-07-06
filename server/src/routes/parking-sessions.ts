@@ -10,15 +10,20 @@ router.get('/parking-session', (req:Request,res:Response) => {
   res.json(GetParkingSessionMock)
 })
 
-router.post('/parking-sessions', (req:Request,res:Response) => {
+router.post('/parking-sessions', async (req:Request,res:Response) => {
   try {
+    const session = await ParkingSession.create(req.body)
     res.status(201)
     res.json({
       success: true,
-      parking_session: CreateParkingSessionMock
+      parking_session: session
     })
   } catch (error){
-    console.log(error)
+    res.status(400)
+    res.json({
+      success: false,
+      error: error
+    })
   }
 })
 
