@@ -4,10 +4,10 @@ import { useParams } from "react-router"
 const duration_options = [10,20,30,40,50,60,72,84,90,102,114,120]
 const cost_per_hour = 150
 
-const costForDuration = (minutes) => {
+const costForDuration = (minutes:number) => {
   return (minutes / 60) * cost_per_hour
 }
-const costPretty = (cents) => {
+const costPretty = (cents:number) => {
   return `$${(Math.round(cents)/ 100).toFixed(2)}`
 }
 
@@ -21,7 +21,7 @@ const NewSessionPage = () => {
     duration: 10
   })
   
-  const handleChangeDuration = (e) => {
+  const handleChangeDuration = (e:) => {
     const i = e.target.selectedIndex
     const d = duration_options[i]
     setAttrs({
@@ -31,7 +31,7 @@ const NewSessionPage = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('submit')
     console.log(`POST /api/sessions/`, attrs)
