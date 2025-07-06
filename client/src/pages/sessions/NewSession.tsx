@@ -1,21 +1,47 @@
 import { useState } from "react"
 import { useParams } from "react-router"
+
+const duration_options = [10,20,30,40,50,60,72,84,90,102,114,120]
+const cost_per_hour = 150
+
+const costForDuration = (minutes) => {
+  return (minutes / 60) * cost_per_hour
+}
+const costPretty = (cents) => {
+  return `$${(Math.round(cents)/ 100).toFixed(2)}`
+}
+
 const NewSessionPage = () => {
   const params = useParams()
   const {meter_number} = params
   
   const [attrs,setAttrs] = useState({
     meter_number,
+    cost:25,
     duration: 10
   })
   
   const handleChangeDuration = (e) => {
-    console.log(e.target.selectedIndex)
+    const i = e.target.selectedIndex
+    const d = duration_options[i]
+    setAttrs({
+      ...attrs,
+      duration: d,
+      cost: costForDuration(d) 
+    })
   }
 
-  return (<>
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('submit')
+    console.log(`POST /api/sessions/`, attrs)
+  }
+
+  return (<div
+    style={{padding:'15px'}}
+    >
     <h3>New Session</h3>
-    <form action="#">
+    <form action="#" onSubmit={handleSubmit}>
       <p>
         <b>Meter Number</b><br />
         {meter_number}
@@ -23,19 +49,18 @@ const NewSessionPage = () => {
       <p>
         <b>Duration</b>
         <select onChange={handleChangeDuration}>
-          <option>10</option>
-          <option>20</option>
-          <option>30</option>
-          <option>40</option>
-          <option>50</option>
-          <option>60</option>
-          <option>72</option>
-          <option>84</option>
-          <option>90</option>
+          {duration_options.map(val => <option key={val}>{val}</option>)}
         </select>
       </p>
+      <p>
+        <b>Cost</b><br />
+        {costPretty(attrs.cost)}
+      </p>
+      <p>
+        <input type="submit"></input>
+      </p>
     </form>
-  </>
+  </div>
   )
 }
 
