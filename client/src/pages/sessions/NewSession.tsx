@@ -3,7 +3,8 @@ import { useParams } from "react-router"
 import useFetch from "@/hooks/useFetch"
 import { costForDuration, duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
-import type { CreateParkingSessionParams } from "@/types/api/CreateParkingSessionParams"
+import type { CreateParkingSessionParams } from "@/types/api/CreateSessionParams"
+import { toTimestamp } from "@/util/date"
 
 // const createSession = (attrs:CreateParkingSessionParams) => {
 const createSession =async (attrs:any) => {
@@ -28,7 +29,8 @@ const NewSessionPage = () => {
   const [attrs,setAttrs] = useState({
     meter_number,
     cost:25,
-    duration: 10
+    duration: 10,
+    start_time: toTimestamp(new Date())
   })
   
   const handleChangeDuration = (e:React.ChangeEvent<HTMLSelectElement>) => {

@@ -24,6 +24,7 @@
     "@types/testing-library__jest-dom": "^6.0.0",
     "@vis.gl/react-google-maps": "latest",
     "@vitejs/plugin-react": "^4.5.2",
+    "dayjs": "^1.11.13",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
