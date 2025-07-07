@@ -8,6 +8,7 @@ import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
 import { toTimestamp } from "@/util/date"
 import NewSessonForm from "@/components/sessions/NewSessionForm"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
+import type { ParkingSessionResponse } from "@/types/api/ParkingSessionResponse"
 
 const NewSessionPage = () => {
   const initial_duration = duration_options[0]
@@ -15,7 +16,7 @@ const NewSessionPage = () => {
   const {meter_number} = useParams()
   
   const [attrs,setAttrs] = useState({
-    id:null,
+    id:undefined,
     meter_number,
     cost: initial_cost,
     duration: initial_duration,
@@ -46,21 +47,21 @@ const NewSessionPage = () => {
       if(!res.success){
         throw new Error(res.error)
       }
+
       const {parking_session} = res
       setAttrs({
         ...attrs,
         id: parking_session.id,
-        start_time: parking_session.start,
-        end_time: parking_session.end
+        start_time: parking_session.started,
+        end_time: parking_session.ends
       })
     } catch(e){
       console.log(e)
     } finally {
       setIsLoading(false)
     }
-  }
-
-  // const createSession = (attrs:CreateParkingSessionParams) => {
+  } 
+                                                        //Promise<ParkingSessionResponse> =>
   const createSession = async (attrs:CreateSessionParams):Promise<any> => {
     const res = await fetch("/api/parking-sessions", {
       method:'POST',
