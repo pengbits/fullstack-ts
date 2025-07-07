@@ -6,8 +6,12 @@ describe('ParkingSession', () => {
     test('get the active session', async () => {
       const s = await ParkingSession.current()
       expect(s).toBeTruthy()
-      expectAttributes(s, ['meter_number','active','started','ends'])
-      expect(s.active).toBe(true)
+      expectAttributes(s, ['meter','id','started','ends'])
+      expectAttributes(s.meter, [
+        'meter_number',
+        'side_of_street',
+        'on_street'
+      ])
     })
   })
   describe('new()', () => {
@@ -18,9 +22,8 @@ describe('ParkingSession', () => {
         duration: 20,
       })
       expect(s).toBeTruthy()
-      expect(s.active).toBe(true)
-      expect(s.start).toBe('2025-06-30 12:00:00')
-      expect(s.end).toBe('2025-06-30 12:20:00')
+      expect(s.started).toBe('2025-06-30 12:00:00')
+      expect(s.ends).toBe('2025-06-30 12:20:00')
       expectAttributes(s.meter, [
         'meter_number',
         'side_of_street',

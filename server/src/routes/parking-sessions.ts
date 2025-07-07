@@ -5,9 +5,9 @@ import ParkingSession from '../models/parking-session'
 
 const router = express.Router();
 
-router.get('/parking-session', (req:Request,res:Response) => {
-  const p = new ParkingSession()
-  res.json(GetParkingSessionMock)
+router.get('/parking-session', async (req:Request,res:Response) => {
+  const session = await ParkingSession.current()
+  res.json(session)
 })
 
 router.post('/parking-sessions', async (req:Request,res:Response) => {

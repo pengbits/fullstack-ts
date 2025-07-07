@@ -4,13 +4,21 @@ import app from "../app"
 
 describe('parking-sessions', () => {
   describe('GET /api/parking-session', () => {
-    // it('returns data about the current parking session', async () => {
-    //   const response = await request(app).get('/api/parking-session')
-    //   expect(response.status).toBe(200)
-    //   expectAttributes(response.body, [
-    //     'id','car_id','meter_id','meter_location','start_time','end_time','cost'
-    //   ])
-    // })
+    it('returns data about the current parking session', async () => {
+      const response = await request(app).get('/api/parking-session')
+      expect(response.status).toBe(200)
+      expectAttributes(response.body, [
+        'id','meter','started','ends'
+      ])
+      console.log(response.body)
+      expect(response.body.meter).toEqual({
+        'lat'           : expect.any(Number),
+        'long'          : expect.any(Number),
+        'meter_number'  : expect.any(String),
+        'on_street'     : expect.any(String),
+        'side_of_street': expect.any(String)
+      })
+    })
   })
 
   describe('POST /api/parking-sessions', () => {
@@ -25,7 +33,7 @@ describe('parking-sessions', () => {
         .set('Accept', 'application/json')
       expect(response.status).toBe(201)
       expectAttributes(response.body.parking_session, [
-        'id','start','end','active','meter'
+        'id','started','ends','active','meter'
       ])
       expectAttributes(response.body.parking_session.meter, [
         'meter_number',   //: '3163005',

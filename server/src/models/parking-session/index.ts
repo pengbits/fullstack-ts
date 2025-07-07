@@ -7,14 +7,33 @@ import { toDate, toTimestamp } from "../../utils/date"
 
 class ParkingSession {
   static async current () {
-    const sql = `SELECT * FROM parking_sessions ORDER BY ends DESC LIMIT 1`;
+    // TODO join meter to query
+    const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active
+    FROM parking_sessions AS s
+    JOIN meters AS m ON s.meter_number=m.meter_number
+    ORDER BY ends DESC LIMIT 1`
     console.log(sql)
     try {
       const res = await pool.query(sql)
       if(res.rows.length !== 1) throw new Error('expected 1 row in ParkingSession::current(), found:'+res.rows.length)
       
-      const session = res.rows[0]
-      return Promise.resolve(session)
+      const {
+        meter_number,
+        side_of_street,
+        on_street,
+        lat,
+        long,
+        ...session
+      } = res.rows[0]
+      return Promise.resolve({...session,
+        meter: {
+          meter_number,
+          side_of_street,
+          on_street,
+          lat,
+          long
+        }
+      })
     }
     catch(e:any){
       throw e
@@ -43,8 +62,8 @@ class ParkingSession {
 
       return Promise.resolve({
         id: session.id,
-        start:session.started,
-        end: session.ends,
+        started:session.started,
+        ends: session.ends,
         active: session.active,
         meter
       })

@@ -1,7 +1,8 @@
 import { MeterAttributes } from "./MeterAttributes"
 export default interface ParkingSessionAttributes {
-  start: string, // ISO-like but without timezone 'MM-DD-YYYY HH:mm:ss'
-  end: string,
+  id: string,
+  started: string, // ISO-like but without timezone 'MM-DD-YYYY HH:mm:ss'
+  ends: string,
   active: Boolean,
   meter: MeterAttributes
 }
