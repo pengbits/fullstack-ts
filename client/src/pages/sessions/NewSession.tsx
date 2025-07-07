@@ -48,6 +48,7 @@ const NewSessionPage = () => {
       const {parking_session} = res
       setAttrs({
         ...attrs,
+        id: parking_session.id,
         start_time: parking_session.start,
         end_time: parking_session.end
       })

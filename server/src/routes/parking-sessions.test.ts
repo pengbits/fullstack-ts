@@ -25,7 +25,7 @@ describe('parking-sessions', () => {
         .set('Accept', 'application/json')
       expect(response.status).toBe(201)
       expectAttributes(response.body.parking_session, [
-        'start','end','active','meter'
+        'id','start','end','active','meter'
       ])
       expectAttributes(response.body.parking_session.meter, [
         'meter_number',   //: '3163005',

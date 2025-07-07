@@ -3,7 +3,7 @@ import { prettyPrice } from "@/util/string"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 
 interface NewSessionFormProps {
-  meter_number:string,
+  meter_number?:string,
   cost:number,
   handleSubmit:FormEventHandler<HTMLFormElement>,
   handleChangeDuration:ChangeEventHandler<HTMLSelectElement>,

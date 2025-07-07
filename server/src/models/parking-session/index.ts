@@ -34,7 +34,7 @@ class ParkingSession {
       
       const sql = `
       INSERT INTO parking_sessions (meter_number, started, ends, active)
-      VALUES ($1,$2,$3,$4) RETURNING meter_number, started::text, ends::text, active`
+      VALUES ($1,$2,$3,$4) RETURNING id, meter_number, started::text, ends::text, active`
       console.log(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true])
       const res =await pool.query(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true])    
 
@@ -42,6 +42,7 @@ class ParkingSession {
       const session = res.rows[0]
 
       return Promise.resolve({
+        id: session.id,
         start:session.started,
         end: session.ends,
         active: session.active,
