@@ -23,6 +23,7 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
       // console.log(url, opts)
       const response = await fetch(url, opts)
       const json = await response.json()
+      await new Promise(resolve => setTimeout(resolve, 1000))
       setData(json)
     } catch (e){
       setError(e)

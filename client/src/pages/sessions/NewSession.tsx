@@ -16,7 +16,7 @@ const NewSessionPage = () => {
   const {meter_number} = useParams()
   
   const [attrs,setAttrs] = useState({
-    id:undefined,
+    id:null,
     meter_number,
     cost: initial_cost,
     duration: initial_duration,
