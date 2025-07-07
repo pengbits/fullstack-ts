@@ -5,7 +5,7 @@ import './index.css'
 import App from './App.tsx'
 import MapPage from './pages/Map'
 import NewSessionPage     from './pages/sessions/NewSession'
-import CheckoutSessionPage  from './pages/sessions/CheckoutSession.tsx'
+import EditSessionPage from './pages/sessions/EditSession.tsx';
 import ConfirmSessionPage from './pages/sessions/ConfirmSession'
 import ActiveSessionPage  from './pages/sessions/ActiveSession'
 
@@ -19,8 +19,8 @@ const router = createBrowserRouter([
       path:'/sessions/new/:meter_number',
       Component: NewSessionPage
     },{
-      path:'/sessions/checkout',
-      Component: CheckoutSessionPage
+      path:'/sessions/extend',
+      Component: EditSessionPage
     },{
       path:'/sessions/confirm',
       Component: ConfirmSessionPage

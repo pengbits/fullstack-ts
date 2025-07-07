@@ -1,4 +1,5 @@
 import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
+import { Link } from "react-router"
 
 const SessionDetails = ({
   meter,
@@ -18,6 +19,9 @@ const SessionDetails = ({
     <p>Remaining Time: </p>
     <p><b>Cost:</b><br />
       $0.00
+    </p>
+    <p>
+      <Link to={'/sessions/extend'}>Extend</Link>
     </p>
   </div>)
 }
