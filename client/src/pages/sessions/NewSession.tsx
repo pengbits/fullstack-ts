@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useParams } from "react-router"
 import { costForDuration, duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import { pretty as prettyDate } from "@/util/date"
 
-import type { CreateParkingSessionParams } from "@/types/api/CreateSessionParams"
+import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
 import { toTimestamp } from "@/util/date"
 import NewSessonForm from "@/components/sessions/NewSessionForm"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
 
 const NewSessionPage = () => {
-  const params = useParams()
-  const {meter_number} = params
+  const initial_duration = duration_options[0]
+  const initial_cost = costForDuration(initial_duration)
+  const {meter_number} = useParams()
   
   const [attrs,setAttrs] = useState({
     id:null,
     meter_number,
-    cost:25,
-    duration: 10,
+    cost: initial_cost,
+    duration: initial_duration,
     start_time: toTimestamp(new Date()),
     end_time:null
   })
@@ -52,7 +53,6 @@ const NewSessionPage = () => {
         start_time: parking_session.start,
         end_time: parking_session.end
       })
-      console.log(res, attrs.end_time)
     } catch(e){
       console.log(e)
     } finally {
@@ -61,7 +61,7 @@ const NewSessionPage = () => {
   }
 
   // const createSession = (attrs:CreateParkingSessionParams) => {
-  const createSession = async (attrs:any):Promise<any> => {
+  const createSession = async (attrs:CreateSessionParams):Promise<any> => {
     const res = await fetch("/api/parking-sessions", {
       method:'POST',
       headers: {"Content-Type": "application/json"},
@@ -73,7 +73,10 @@ const NewSessionPage = () => {
     return json
   }
 
-  if(isLoading) return <p>loading...</p>
+  if(isLoading) return (
+    <p>loading...</p>
+  )
+
   if(isCreating && !isLoading) return  (
     <NewSessionConfirmation
       id={attrs.id}
@@ -83,13 +86,14 @@ const NewSessionPage = () => {
     >
     </NewSessionConfirmation>
   )
+  
   if(!isCreating && !isLoading) return (
     <NewSessonForm
       handleSubmit={handleSubmit}
       handleChangeDuration={handleChangeDuration}
       meter_number={meter_number}
       cost={attrs.cost}
-      >
+    >
     </NewSessonForm>
   )
 }
