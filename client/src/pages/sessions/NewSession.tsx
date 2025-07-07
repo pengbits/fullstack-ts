@@ -1,37 +1,29 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import useFetch from "@/hooks/useFetch"
 import { costForDuration, duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
+import { pretty as prettyDate } from "@/util/date"
+
 import type { CreateParkingSessionParams } from "@/types/api/CreateSessionParams"
 import { toTimestamp } from "@/util/date"
-
-// const createSession = (attrs:CreateParkingSessionParams) => {
-const createSession =async (attrs:any) => {
-  try {
-    const res = await fetch("/api/parking-sessions", {
-      method:'POST',
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(attrs)
-    })
-    const json = await res.json()
-    return json
-  } catch(e:any){
-    console.log(e)
-  }
-}
-
+import NewSessonForm from "@/components/sessions/NewSessionForm"
+import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
 
 const NewSessionPage = () => {
   const params = useParams()
   const {meter_number} = params
   
   const [attrs,setAttrs] = useState({
+    id:null,
     meter_number,
     cost:25,
     duration: 10,
-    start_time: toTimestamp(new Date())
+    start_time: toTimestamp(new Date()),
+    end_time:null
   })
+
+  const [isCreating, setIsCreating] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   
   const handleChangeDuration = (e:React.ChangeEvent<HTMLSelectElement>) => {
     const i = e.target.selectedIndex
@@ -45,37 +37,59 @@ const NewSessionPage = () => {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('submit')
     console.log(`POST /api/sessions/`, attrs)
-    const res = await createSession(attrs)
-    console.log(res)
+    setIsCreating(true)
+    setIsLoading(true)
+    try {
+      const res = await createSession(attrs)
+      if(!res.success){
+        throw new Error(res.error)
+      }
+      const {parking_session} = res
+      setAttrs({
+        ...attrs,
+        start_time: parking_session.start,
+        end_time: parking_session.end
+      })
+      console.log(res, attrs.end_time)
+    } catch(e){
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
   }
-  
 
-  return (<div
-    style={{padding:'15px'}}
+  // const createSession = (attrs:CreateParkingSessionParams) => {
+  const createSession = async (attrs:any):Promise<any> => {
+    const res = await fetch("/api/parking-sessions", {
+      method:'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(attrs)
+    })
+    const json = await res.json()
+    // simulate latency
+    // return new Promise(resolve => setTimeout(resolve, 1000, json))
+    return json
+  }
+
+  if(isLoading) return <p>loading...</p>
+  if(isCreating && !isLoading) return  (
+    <NewSessionConfirmation
+      id={attrs.id}
+      start_time={prettyDate(attrs.start_time)} 
+      end_time={attrs.end_time ? prettyDate(attrs.end_time) : ''}
+      cost={prettyPrice(attrs.cost)}
     >
-    <h3>New Session</h3>
-    <form action="#" onSubmit={handleSubmit}>
-      <p>
-        <b>Meter Number</b><br />
-        {meter_number}
-      </p>
-      <p>
-        <b>Duration</b>
-        <select onChange={handleChangeDuration}>
-          {duration_options.map(val => <option key={val}>{val}</option>)}
-        </select>
-      </p>
-      <p>
-        <b>Cost</b><br />
-        {prettyPrice(attrs.cost)}
-      </p>
-      <p>
-        <input type="submit"></input>
-      </p>
-    </form>
-  </div>
+    </NewSessionConfirmation>
+  )
+  if(!isCreating && !isLoading) return (
+    <NewSessonForm
+      handleSubmit={handleSubmit}
+      handleChangeDuration={handleChangeDuration}
+      meter_number={meter_number}
+      cost={attrs.cost}
+      >
+    </NewSessonForm>
   )
 }
 

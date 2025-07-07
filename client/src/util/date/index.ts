@@ -8,3 +8,7 @@ export const toTimestamp = (date:any) => {
 export const toDate = (dateStr:string) => {
   return dayjs(dateStr)
 }
+
+export const pretty = (dateStr:string) => {
+  return dayjs(dateStr).format('MMM DD YYYY HH:mm A')
+}
