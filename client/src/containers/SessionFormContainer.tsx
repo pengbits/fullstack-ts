@@ -6,6 +6,7 @@ import SessionForm from "@/components/sessions/SessionForm"
 interface SessionFormContainerProps {
   meter_number:string | undefined,
   initial_duration:number,
+  title: string,
   handleSubmit:Function
 }
 const SessionFormContainer = (props:SessionFormContainerProps) => {
@@ -48,6 +49,8 @@ const SessionFormContainer = (props:SessionFormContainerProps) => {
 
   return (
     <SessionForm 
+      title={props.title}
+      duration={props.initial_duration}
       handleChangeDuration={handleChangeDuration}
       handleSubmit={handleSubmit}
       meter_number={attrs.meter_number}

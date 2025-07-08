@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useParams } from "react-router"
-import { costForDuration, duration_options} from "@/util/meters"
+import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import { pretty as prettyDate, toTimestamp } from "@/util/date"
 import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
@@ -11,32 +11,22 @@ import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 
 const NewSessionPage = () => {
   const initial_duration = duration_options[0]
-  const initial_cost = costForDuration(initial_duration)
   const {meter_number} = useParams()
 
   const [session, setSession] = useState({} as ParkingSessionAttributes)
   const [isCreating, setIsCreating] = useState(false)
-  const [isUpdating, setIsUpdating] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
   const handleSubmit = async (attrs:CreateSessionParams) => {
     console.log(`NewSession#handleSubmit`, attrs)
-    let res
     try {
-      if(!attrs.id){
         console.log('CREATE')
         setIsCreating(true)
         setIsLoading(true)
-        res = await createSession(attrs)
+        const res = await createSession(attrs)
         setSession(res.parking_session)
         return res
-      } else {
-        console.log('UPDATE')
-        setIsUpdating(true)
-        setIsLoading(true)
-        return Promise.resolve(attrs)
-      }
     }
     catch(e){
       setIsError(true)
@@ -55,12 +45,16 @@ const NewSessionPage = () => {
     })
     const json:ParkingSessionResponse = await res.json()
     // simulate latency
-    return new Promise(resolve => setTimeout(resolve, 1000, json))
-    // return json
+    // return new Promise(resolve => setTimeout(resolve, 1000, json))
+    return json
   }
 
   if(isLoading) return (
     <p>loading...</p>
+  )
+  
+  if(isError) return (
+    <p>An error occurred</p>
   )
 
   if(isCreating && !isLoading) return  (
@@ -75,6 +69,7 @@ const NewSessionPage = () => {
   
   if(!isCreating && !isLoading) return (
     <SessionFormContainer
+      title='New Parking Session'
       handleSubmit={handleSubmit}
       initial_duration={initial_duration}
       meter_number={meter_number}
