@@ -6,11 +6,12 @@ describe('parking-sessions', () => {
   describe('GET /api/parking-session', () => {
     it('returns data about the current parking session', async () => {
       const response = await request(app).get('/api/parking-session')
+
       expect(response.status).toBe(200)
       expectAttributes(response.body, [
-        'id','meter','started','ends'
+        'id','meter','started','ends','cost'
       ])
-      console.log(response.body)
+
       expect(response.body.meter).toEqual({
         'lat'           : expect.any(Number),
         'long'          : expect.any(Number),

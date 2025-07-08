@@ -1,5 +1,6 @@
 import { expectAttributes } from "../.jest/testUtils"
 import ParkingSession from "./parking-session"
+import { costForDuration } from "../utils/meters"
 
 describe('ParkingSession', () => {
   describe('current()', () => {
@@ -24,6 +25,7 @@ describe('ParkingSession', () => {
       expect(s).toBeTruthy()
       expect(s.started).toBe('2025-06-30 12:00:00')
       expect(s.ends).toBe('2025-06-30 12:20:00')
+      expect(s.cost).toBe(costForDuration(20))
       expectAttributes(s.meter, [
         'meter_number',
         'side_of_street',

@@ -4,5 +4,6 @@ export default interface ParkingSessionAttributes {
   started: string, // ISO-like but without timezone 'MM-DD-YYYY HH:mm:ss'
   ends: string,
   active: Boolean,
-  meter: MeterAttributes
+  cost: number,
+  meter: MeterAttributes,
 }
