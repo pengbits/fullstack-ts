@@ -76,6 +76,37 @@ class ParkingSession {
     }
     
   }
+
+  static async update (attrs:any){
+    try {
+      let sql = `SELECT started, ends, id FROM parking_sessions ORDER BY ends DESC LIMIT 1`
+      console.log(sql) 
+      let res = await pool.query(sql)
+      if(res.rows.length !== 1) throw new Error('expected 1 row in ParkingSession::update, found:'+res.rows.length)
+      const session = res.rows[0]
+      const {id,started} = session
+
+      if(!attrs.duration || attrs.duration < 0) throw new Error(`invalid duration provided: ${attrs.duration}`)
+      const ends = toDate(started).add(attrs.duration, 'minutes')
+    
+      sql = `UPDATE parking_sessions SET ends=$1 WHERE id=$2;`;
+      console.log(sql, [toTimestamp(ends), id])
+      res = await pool.query(sql, [toTimestamp(ends),id])
+      return {
+        ...session,
+        ends
+      }
+    } catch (e:any){
+      throw e
+    }
+  }
+
+  static async deleteAll () {
+    const sql = `DELETE FROM parking_sessions`
+    console.log(sql)
+    const res =  await pool.query(sql)
+    return {success:true}
+  }
 }
 
 export default ParkingSession

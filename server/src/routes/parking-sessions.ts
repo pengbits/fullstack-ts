@@ -22,7 +22,28 @@ router.post('/parking-sessions', async (req:Request,res:Response) => {
     res.status(400)
     res.json({
       success: false,
-      error: error
+      error
+    })
+  }
+})
+
+router.put('/parking-session', async (req:Request, res:Response) => {
+  try {
+    const updated = await ParkingSession.update({
+      duration: req.body.duration
+    })
+
+    res.status(200)
+    res.json({
+      success: true,
+      parking_session: updated
+    })
+  } catch(error){
+    console.log(error)
+    res.status(400)
+    res.json({
+      success: false,
+      error
     })
   }
 })
