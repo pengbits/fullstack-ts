@@ -7,7 +7,8 @@ describe('ParkingSession', () => {
     test('get the active session', async () => {
       const s = await ParkingSession.current()
       expect(s).toBeTruthy()
-      expectAttributes(s, ['meter','id','started','ends'])
+      expectAttributes(s, ['meter','id','started','ends','cost'])
+      expect(s.cost).toEqual(expect.any(Number))
       expectAttributes(s.meter, [
         'meter_number',
         'side_of_street',

@@ -26,10 +26,12 @@ class ParkingSession {
         on_street,
         lat,
         long,
+        cost,
         ...session
       } = res.rows[0]
       return Promise.resolve({
         ...session,
+        cost: parseInt(cost),
         duration: getDuration(session.started, session.ends),
         meter: {
           meter_number,
