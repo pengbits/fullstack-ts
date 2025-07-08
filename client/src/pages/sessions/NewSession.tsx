@@ -10,7 +10,6 @@ import type { ParkingSessionResponse } from "@/types/api/ParkingSessionResponse"
 import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 
 const NewSessionPage = () => {
-  const initial_duration = duration_options[0]
   const {meter_number} = useParams()
 
   const [session, setSession] = useState({} as ParkingSessionAttributes)
@@ -71,7 +70,6 @@ const NewSessionPage = () => {
     <SessionFormContainer
       title='New Parking Session'
       handleSubmit={handleSubmit}
-      initial_duration={initial_duration}
       meter_number={meter_number}
     >
     </SessionFormContainer>

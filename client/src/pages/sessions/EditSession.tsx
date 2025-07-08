@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
-import { pretty as prettyDate, toTimestamp } from "@/util/date"
+import { pretty as prettyDate, toTimestamp, toDate } from "@/util/date"
 import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
 import SessionFormContainer from "@/containers/SessionFormContainer"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
@@ -42,7 +42,6 @@ const NewSessionPage = () => {
         setisUpdating(true)
         setIsLoading(true)
         const res = await updateSession(attrs)
-        // TODO cost is getting lost here
         setSession(res.parking_session)
         return res
     }
@@ -100,8 +99,8 @@ const NewSessionPage = () => {
     return (
     <SessionFormContainer
       title='Extend Parking Session'
-      handleSubmit={handleSubmit}
       initial_duration={session.duration}
+      handleSubmit={handleSubmit}
       meter_number={session.meter.meter_number}
     >
     </SessionFormContainer>

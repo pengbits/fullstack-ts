@@ -1,3 +1,4 @@
+import { toTimestamp } from "@/util/date"
 import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import type { ChangeEventHandler, FormEventHandler } from "react"
@@ -5,8 +6,10 @@ import type { ChangeEventHandler, FormEventHandler } from "react"
 interface SessionFormProps {
   title:string,
   meter_number?:string,
+  start_time:Date,
+  end_time?:Date,
+  duration?:number,
   cost:number,
-  duration:number,
   handleSubmit:FormEventHandler<HTMLFormElement>,
   handleChangeDuration:ChangeEventHandler<HTMLSelectElement>,
 }
@@ -15,6 +18,8 @@ const SessionForm = ({
   title,
   meter_number,
   cost,
+  start_time,
+  end_time,
   duration,
   handleSubmit,
   handleChangeDuration
@@ -26,6 +31,12 @@ const SessionForm = ({
       <p>
         <b>Meter Number</b><br />
         {meter_number}
+      </p>
+      <p><b>Start Time:</b><br />
+        {toTimestamp(start_time)}
+      </p>
+      <p><b>End Time:</b><br />
+        {end_time ? toTimestamp(end_time) : null}
       </p>
       <p>
         <b>Duration</b>{' '}
