@@ -62,6 +62,7 @@ describe('parking-sessions', () => {
     })
   })
 
+  // TODO don't rely on other tests to provide a parking-session in the initial state we're working from here:
   describe('PUT /api/parking-session', () => {
     it('extends the length of the current parking session', async () => {
       const current = await ParkingSession.current()
@@ -76,6 +77,8 @@ describe('parking-sessions', () => {
       expect(res.body.success).toBe(true)
       const updated = res.body.parking_session
       expect(toDate(updated.ends).toISOString()).toEqual(expectedEnds.toISOString())
+      // check that cost gets updated here
+      
     })
   })
 })
