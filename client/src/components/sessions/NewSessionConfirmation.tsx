@@ -1,5 +1,5 @@
 interface NewSessionConfirmationProps {
-  id:string | null,
+  id:string | undefined,
   start_time:string,
   end_time:string,
   cost:string

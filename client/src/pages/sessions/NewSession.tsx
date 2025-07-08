@@ -2,65 +2,50 @@ import { useState } from "react"
 import { useParams } from "react-router"
 import { costForDuration, duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
-import { pretty as prettyDate } from "@/util/date"
-
+import { pretty as prettyDate, toTimestamp } from "@/util/date"
 import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
-import { toTimestamp } from "@/util/date"
-import NewSessonForm from "@/components/sessions/NewSessionForm"
+import SessionFormContainer from "@/containers/SessionFormContainer"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
 import type { ParkingSessionResponse } from "@/types/api/ParkingSessionResponse"
+import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 
 const NewSessionPage = () => {
   const initial_duration = duration_options[0]
   const initial_cost = costForDuration(initial_duration)
   const {meter_number} = useParams()
-  
-  const [attrs,setAttrs] = useState({
-    id:null,
-    meter_number,
-    cost: initial_cost,
-    duration: initial_duration,
-    start_time: toTimestamp(new Date()),
-    end_time:null
-  })
 
+  const [session, setSession] = useState({} as ParkingSessionAttributes)
   const [isCreating, setIsCreating] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  
-  const handleChangeDuration = (e:React.ChangeEvent<HTMLSelectElement>) => {
-    const i = e.target.selectedIndex
-    const d = duration_options[i]
-    setAttrs({
-      ...attrs,
-      duration: d,
-      cost: costForDuration(d) 
-    })
-  }
+  const [isError, setIsError] = useState(false)
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log(`POST /api/sessions/`, attrs)
-    setIsCreating(true)
-    setIsLoading(true)
+  const handleSubmit = async (attrs:CreateSessionParams) => {
+    console.log(`NewSession#handleSubmit`, attrs)
+    let res
     try {
-      const res = await createSession(attrs)
-      if(!res.success){
-        throw new Error(res.error)
+      if(!attrs.id){
+        console.log('CREATE')
+        setIsCreating(true)
+        setIsLoading(true)
+        res = await createSession(attrs)
+        setSession(res.parking_session)
+        return res
+      } else {
+        console.log('UPDATE')
+        setIsUpdating(true)
+        setIsLoading(true)
+        return Promise.resolve(attrs)
       }
-
-      const {parking_session} = res
-      setAttrs({
-        ...attrs,
-        id: parking_session.id,
-        start_time: parking_session.started,
-        end_time: parking_session.ends
-      })
-    } catch(e){
+    }
+    catch(e){
+      setIsError(true)
       console.log(e)
-    } finally {
+    }
+    finally {
       setIsLoading(false)
     }
-  } 
+  }
                                                         //Promise<ParkingSessionResponse> =>
   const createSession = async (attrs:CreateSessionParams):Promise<any> => {
     const res = await fetch("/api/parking-sessions", {
@@ -68,10 +53,10 @@ const NewSessionPage = () => {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(attrs)
     })
-    const json = await res.json()
+    const json:ParkingSessionResponse = await res.json()
     // simulate latency
-    // return new Promise(resolve => setTimeout(resolve, 1000, json))
-    return json
+    return new Promise(resolve => setTimeout(resolve, 1000, json))
+    // return json
   }
 
   if(isLoading) return (
@@ -80,22 +65,21 @@ const NewSessionPage = () => {
 
   if(isCreating && !isLoading) return  (
     <NewSessionConfirmation
-      id={attrs.id}
-      start_time={prettyDate(attrs.start_time)} 
-      end_time={attrs.end_time ? prettyDate(attrs.end_time) : ''}
-      cost={prettyPrice(attrs.cost)}
+      id={session.id}
+      start_time={prettyDate(session.started)} 
+      end_time={session.ends ? prettyDate(session.ends) : ''}
+      cost={prettyPrice(session.cost)}
     >
     </NewSessionConfirmation>
   )
   
   if(!isCreating && !isLoading) return (
-    <NewSessonForm
+    <SessionFormContainer
       handleSubmit={handleSubmit}
-      handleChangeDuration={handleChangeDuration}
+      initial_duration={initial_duration}
       meter_number={meter_number}
-      cost={attrs.cost}
     >
-    </NewSessonForm>
+    </SessionFormContainer>
   )
 }
 

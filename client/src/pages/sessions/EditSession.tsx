@@ -6,7 +6,7 @@ import { pretty as prettyDate } from "@/util/date"
 
 import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
 import { toTimestamp } from "@/util/date"
-import NewSessonForm from "@/components/sessions/NewSessionForm"
+import NewSessonForm from "@/components/sessions/SessionForm"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
 import type { ParkingSessionResponse } from "@/types/api/ParkingSessionResponse"
 

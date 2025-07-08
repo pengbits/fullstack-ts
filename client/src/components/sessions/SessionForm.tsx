@@ -2,19 +2,19 @@ import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 
-interface NewSessionFormProps {
+interface SessionFormProps {
   meter_number?:string,
   cost:number,
   handleSubmit:FormEventHandler<HTMLFormElement>,
   handleChangeDuration:ChangeEventHandler<HTMLSelectElement>,
 }
 
-const NewSessionForm = ({
+const SessionForm = ({
   meter_number,
   cost,
   handleSubmit,
   handleChangeDuration
-}:NewSessionFormProps) => {
+}:SessionFormProps) => {
   return (
   <div style={{padding:'15px'}}>
     <h3>New Session</h3>
@@ -40,4 +40,4 @@ const NewSessionForm = ({
   </div>
   )
 }
-export default NewSessionForm
+export default SessionForm

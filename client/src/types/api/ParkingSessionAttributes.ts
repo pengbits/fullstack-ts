@@ -5,5 +5,5 @@ export default interface ParkingSessionAttributes {
   ends?: string,
   active: Boolean,
   meter: MeterAttributes,
-  cost: string
+  cost: number
 }
