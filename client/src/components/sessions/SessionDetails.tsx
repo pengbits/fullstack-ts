@@ -5,6 +5,7 @@ const SessionDetails = ({
   meter,
   started,
   ends,
+  cost
 }:ParkingSessionAttributes) => {
   return (<div>
     <h4>{meter.meter_number} {meter.side_of_street} {meter.on_street}</h4>
@@ -18,7 +19,7 @@ const SessionDetails = ({
     </p>
     <p>Remaining Time: </p>
     <p><b>Cost:</b><br />
-      $0.00
+      {cost}
     </p>
     <p>
       <Link to={'/sessions/extend'}>Extend</Link>

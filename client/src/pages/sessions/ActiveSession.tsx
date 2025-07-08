@@ -2,6 +2,8 @@ import useFetch from "@/hooks/useFetch"
 import SessionDetails from "@/components/sessions/SessionDetails"
 import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 import { pretty } from "@/util/date"
+import { prettyPrice } from "@/util/string"
+
 const ActiveSessionPage = () => {
   const url = "/api/parking-session"
   const {data,isLoading,isError} = useFetch(url)
@@ -15,6 +17,7 @@ const ActiveSessionPage = () => {
     active,
     started,
     ends,
+    cost,
     meter
   } = data || {}
   
@@ -23,6 +26,7 @@ const ActiveSessionPage = () => {
     active={active}
     started={pretty(started)}
     ends={pretty(ends)}
+    cost={prettyPrice(cost)}
     meter={meter}
   />)
 
