@@ -94,12 +94,13 @@ class ParkingSession {
 
       if(!attrs.duration || attrs.duration < 0) throw new Error(`invalid duration provided: ${attrs.duration}`)
       const ends = toDate(started).add(attrs.duration, 'minutes')
-    
-      sql = `UPDATE parking_sessions SET ends=$1 WHERE id=$2;`;
-      console.log(sql, [toTimestamp(ends), id])
-      res = await pool.query(sql, [toTimestamp(ends),id])
+      const cost = costForDuration(attrs.duration)
+      sql = `UPDATE parking_sessions SET ends=$1, cost=$2 WHERE id=$3;`;
+      console.log(sql, [toTimestamp(ends), cost, id])
+      res = await pool.query(sql, [toTimestamp(ends), cost, id])
       return {
         ...session,
+        cost,
         ends
       }
     } catch (e:any){
