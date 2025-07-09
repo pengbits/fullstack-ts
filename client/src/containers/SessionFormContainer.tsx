@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { costForDuration, duration_options } from "@/util/meters"
-import { toTimestamp, toDate, addMins, newDate } from "@/util/date"
+import { addMins, newDate, Dayjs } from "@/util/date"
 import SessionForm from "@/components/sessions/SessionForm"
 
 interface SessionFormContainerProps {
