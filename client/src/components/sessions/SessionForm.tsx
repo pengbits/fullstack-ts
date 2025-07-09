@@ -1,4 +1,4 @@
-import { toTimestamp } from "@/util/date"
+import { toTimestamp, Dayjs } from "@/util/date"
 import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import type { ChangeEventHandler, FormEventHandler } from "react"
@@ -6,8 +6,8 @@ import type { ChangeEventHandler, FormEventHandler } from "react"
 interface SessionFormProps {
   title:string,
   meter_number?:string,
-  start_time:Date,
-  end_time?:Date,
+  start_time:Dayjs,
+  end_time?:Dayjs,
   duration?:number,
   cost:number,
   handleSubmit:FormEventHandler<HTMLFormElement>,
