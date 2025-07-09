@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router"
-import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
-import { pretty as prettyDate, toTimestamp, toDate } from "@/util/date"
+import { pretty as prettyDate, toDate } from "@/util/date"
 import type { CreateSessionParams } from "@/types/api/CreateSessionParams"
 import SessionFormContainer from "@/containers/SessionFormContainer"
 import NewSessionConfirmation from "@/components/sessions/NewSessionConfirmation"
@@ -10,8 +8,6 @@ import type { ParkingSessionResponse } from "@/types/api/ParkingSessionResponse"
 import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 
 const NewSessionPage = () => {
-  const initial_duration = duration_options[0]
-  const {meter_number} = useParams()
 
   const [session, setSession] = useState({} as ParkingSessionAttributes)
   const [isReading, setIsReading] = useState(false)
@@ -82,7 +78,6 @@ const NewSessionPage = () => {
 
 
   if(isUpdating && !isLoading) {
-    console.log(session.cost)
     return  (
     <NewSessionConfirmation
       id={session.id}
@@ -95,10 +90,11 @@ const NewSessionPage = () => {
   }
   
   if(isReading && !isLoading) {
-    // console.log(session)
     return (
     <SessionFormContainer
       title='Extend Parking Session'
+      start_time={toDate(session.started)}
+      end_time={session.ends ? toDate(session.ends): undefined}
       initial_duration={session.duration}
       handleSubmit={handleSubmit}
       meter_number={session.meter.meter_number}

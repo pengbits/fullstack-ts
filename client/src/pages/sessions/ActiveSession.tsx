@@ -18,7 +18,7 @@ const ActiveSessionPage = () => {
     cost,
     meter
   } = data || {}
-  
+
   return (meter && <SessionDetails 
     id={id}
     active={active}
