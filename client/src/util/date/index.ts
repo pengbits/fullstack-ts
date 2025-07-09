@@ -1,6 +1,7 @@
 // TODO sync w backend
 import dayjs from "dayjs"
-import type {Dayjs} from "dayjs"
+import {Dayjs} from "dayjs"
+export {Dayjs}
 
 export const toTimestamp = (date:any) => {
   return dayjs(date).format('MM-DD-YYYY HH:mm:ss')
