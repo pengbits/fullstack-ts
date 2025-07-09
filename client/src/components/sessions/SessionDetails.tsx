@@ -1,7 +1,7 @@
 import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
 import { Link } from "react-router"
 import { prettyPrice } from "@/util/string"
-
+import CountDownWidget from "./CountDownWidget"
 const SessionDetails = ({
   meter,
   started,
@@ -18,8 +18,9 @@ const SessionDetails = ({
       <b>Ends:</b><br />
       {ends}
     </p>
-    <p><b>Remaining Time:</b>{/* TODO countdown widget */}
-    </p>
+    <CountDownWidget 
+      ends={ends}
+    />
     <p><b>Cost:</b><br />
       {prettyPrice(cost)}
     </p>

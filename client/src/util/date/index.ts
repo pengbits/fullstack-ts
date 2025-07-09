@@ -13,7 +13,7 @@ export const toDate = (date:string | Date) => {
 }
 
 export const pretty = (dateStr:string) => {
-  return dayjs(dateStr).format('MMM DD YYYY HH:mm A')
+  return dayjs(dateStr).format('MMM DD YYYY h:mm A')
 }
 
 export const addMins = (date:string | Dayjs, mins:number) => {
