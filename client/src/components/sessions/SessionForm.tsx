@@ -1,4 +1,4 @@
-import { toTimestamp, Dayjs } from "@/util/date"
+import { toTimestamp, pretty, Dayjs } from "@/util/date"
 import { duration_options} from "@/util/meters"
 import { prettyPrice } from "@/util/string"
 import type { ChangeEventHandler, FormEventHandler } from "react"
@@ -33,10 +33,10 @@ const SessionForm = ({
         {meter_number}
       </p>
       <p><b>Start Time:</b><br />
-        {toTimestamp(start_time)}
+        {pretty(start_time)}
       </p>
       <p><b>End Time:</b><br />
-        {end_time ? toTimestamp(end_time) : null}
+        {end_time ? pretty(end_time) : null}
       </p>
       <p>
         <b>Duration</b>{' '}

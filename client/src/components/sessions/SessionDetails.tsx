@@ -18,9 +18,12 @@ const SessionDetails = ({
       <b>Ends:</b><br />
       {ends}
     </p>
-    <CountDownWidget 
-      ends={ends}
-    />
+    {ends && <p>
+      <b>Remaining Time:</b><br />
+      <CountDownWidget 
+        ends={ends}
+      />
+    </p>}
     <p><b>Cost:</b><br />
       {prettyPrice(cost)}
     </p>

@@ -12,7 +12,7 @@ export const toDate = (date:string | Date) => {
   return dayjs(date)
 }
 
-export const pretty = (dateStr:string) => {
+export const pretty = (dateStr:string | Dayjs) => {
   return dayjs(dateStr).format('MMM DD YYYY h:mm A')
 }
 

@@ -16,11 +16,11 @@ const pad = (n:number) => {
 }
 
 const render = ({hours,mins,seconds}:TimeObject) => {
-  return <p>
+  return <span>
     {pad(hours)}:
     {pad(mins)}:
     {pad(seconds)}
-  </p>
+  </span>
 }
 
 export const CountDownWidget = ({ends}:CountDownWidgetProps) => {
@@ -59,7 +59,7 @@ export const CountDownWidget = ({ends}:CountDownWidgetProps) => {
     return render(time)
   } else {
     clearInterval(id.current)
-    return <p>Expired</p>
+    return <span>Expired</span>
   }
 }
 
