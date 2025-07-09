@@ -15,6 +15,12 @@ describe('ParkingSession', () => {
         'on_street'
       ])
     })
+    test('only one active session at a time', async () => {
+      // ParkingSession.deleteAll()
+      // ParkingSession.create(ends:4:15pm ...attrs1) 
+      // ParkingSession.create(ends:4:30pm ...attrs2)
+      // ParkingSession.current() === attrs2
+    })
   })
   describe('new()', () => {
     test('creates a new session for the meter_number and duration provided', async () => {
