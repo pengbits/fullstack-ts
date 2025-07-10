@@ -2,7 +2,7 @@ import request from "supertest"
 import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
 import ParkingSession from "../models/parking-session"
-import { toDate, toTimestamp, getDuration } from "../utils/date"
+import { toDate, toTimestamp, newDate, getDuration } from "../utils/date"
 import { costForDuration } from "../utils/meters"
 
 beforeAll(async () => {
@@ -11,31 +11,12 @@ beforeAll(async () => {
 
 
 describe('parking-sessions', () => {
-  describe('GET /api/parking-session', () => {
-    it('returns data about the current parking session', async () => {
-      // const response = await request(app).get('/api/parking-session')
-
-      // expect(response.status).toBe(200)
-      // expectAttributes(response.body, [
-      //   'id','meter','started','ends','cost'
-      // ])
-
-      // expect(response.body.meter).toEqual({
-      //   'lat'           : expect.any(Number),
-      //   'long'          : expect.any(Number),
-      //   'meter_number'  : expect.any(String),
-      //   'on_street'     : expect.any(String),
-      //   'side_of_street': expect.any(String)
-      // })
-    })
-  })
-
   describe('POST /api/parking-sessions', () => {
     it('saves the parking-session attrs to the db', async () => {
       const response = await request(app).post('/api/parking-sessions')
         .send({
           'meter_number': '3163005',
-          'start_time':'2025-06-30T14:00:00.000Z',
+          'start_time': toTimestamp(newDate()),
           'duration': 20,
         })
         .set('Accept', 'application/json')
@@ -63,6 +44,26 @@ describe('parking-sessions', () => {
       expect(response.body.success).toBe(false)
     })
   })
+
+  describe('GET /api/parking-session', () => {
+    it('returns data about the current parking session', async () => {
+      const response = await request(app).get('/api/parking-session')
+
+      expect(response.status).toBe(200)
+      expectAttributes(response.body, [
+        'id','meter','started','ends','cost'
+      ])
+
+      expect(response.body.meter).toEqual({
+        'lat'           : expect.any(Number),
+        'long'          : expect.any(Number),
+        'meter_number'  : expect.any(String),
+        'on_street'     : expect.any(String),
+        'side_of_street': expect.any(String)
+      })
+    })
+  })
+
 
   describe('PUT /api/parking-session', () => {
     it('extends the length of the current parking session', async () => {
