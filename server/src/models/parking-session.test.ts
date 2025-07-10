@@ -1,6 +1,8 @@
 import { expectAttributes } from "../.jest/testUtils"
 import ParkingSession from "./parking-session"
 import { costForDuration } from "../utils/meters"
+import { newDate, toTimestamp } from "../utils/date"
+import CreateParkingSessionParams from "../types/CreateParkingSessionParams"
 
 describe('ParkingSession', () => {
   describe('current()', () => {
@@ -16,10 +18,27 @@ describe('ParkingSession', () => {
       ])
     })
     test('only one active session at a time', async () => {
-      // ParkingSession.deleteAll()
-      // ParkingSession.create(ends:4:15pm ...attrs1) 
-      // ParkingSession.create(ends:4:30pm ...attrs2)
-      // ParkingSession.current() === attrs2
+      await ParkingSession.deleteAll()
+      const attrs1:CreateParkingSessionParams = {
+        meter_number: '3043096',
+        start_time: toTimestamp(newDate()),
+        duration: 60
+      }
+      await ParkingSession.create(attrs1)
+
+      const attrs2:CreateParkingSessionParams = {
+        meter_number: '3043055',
+        start_time: toTimestamp(newDate().add(20, 'minutes')),
+        duration: 60
+      }
+ 
+      await ParkingSession.create(attrs2)
+      const sessions = await ParkingSession.find()
+      expect(sessions.length).toBe(2)
+      const active_sessions = sessions.filter(s => s.active == true)
+      expect(active_sessions.length).toBe(1)
+      const current = await ParkingSession.current()
+      expect(current.meter.meter_number).toBe('3043055')
     })
   })
   describe('new()', () => {

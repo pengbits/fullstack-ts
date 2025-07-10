@@ -11,9 +11,6 @@ beforeAll(async () => {
 
 
 describe('parking-sessions', () => {
-  describe('only one active session in db', () => {
-    it.todo('only returns the active parking session, and there can only be 1 at a time')
-  })
   describe('GET /api/parking-session', () => {
     it('returns data about the current parking session', async () => {
       // const response = await request(app).get('/api/parking-session')

@@ -14,7 +14,7 @@ class ParkingSession {
     const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
     FROM parking_sessions AS s
     JOIN meters AS m ON s.meter_number=m.meter_number
-    ORDER BY ends DESC LIMIT 1`
+    WHERE s.active=true`
     console.log(sql)
     try {
       const res = await pool.query(sql)
@@ -55,10 +55,12 @@ class ParkingSession {
     
     try {
       const meter = await Meter.find(attrs.meter_number)
+      await this.unsetActive()
+      
       const start = toDate(attrs.start_time)
       const end   = start.add(attrs.duration, 'minute')
       const cost  = costForDuration(attrs.duration)
-
+      
       const sql = `
       INSERT INTO parking_sessions (meter_number, started, ends, active, cost)
       VALUES ($1,$2,$3,$4,$5) RETURNING id, meter_number, started::text, ends::text, active, cost`
@@ -81,6 +83,12 @@ class ParkingSession {
       throw e
     }
     
+  }
+  
+  static async unsetActive(){
+    const sql = `UPDATE parking_sessions SET active=false WHERE active=true`
+    console.log(sql)
+    return pool.query(sql)
   }
 
   static async update (attrs:any){
@@ -113,6 +121,13 @@ class ParkingSession {
     console.log(sql)
     const res =  await pool.query(sql)
     return {success:true}
+  }
+
+  static async find () {
+    const sql = `SELECT * FROM parking_sessions` 
+    console.log(sql)
+    const res = await pool.query(sql)
+    return res.rows
   }
 }
 
