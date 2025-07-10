@@ -21,7 +21,7 @@ const NewSessionPage = () => {
       setIsLoading(true)
       const res = await fetch("/api/parking-session")
       const json = await res.json()
-      await new Promise(resolve => setTimeout(resolve, 1000, {}))
+      // await new Promise(resolve => setTimeout(resolve, 1000, {}))
       setSession(json)
     } catch(e){
       setIsError(true)
