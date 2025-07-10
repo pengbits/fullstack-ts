@@ -11,6 +11,15 @@ beforeAll(async () => {
 
 
 describe('parking-sessions', () => {
+
+  describe('GET /api/parking-session', () => {
+    it('returns an empty object if there is no current session', async () => {
+      const response = await request(app).get('/api/parking-session')
+
+      expect(response.status).toBe(200)
+      expect(response.body.duration).toBe(0)
+    })
+  })
   describe('POST /api/parking-sessions', () => {
     it('saves the parking-session attrs to the db', async () => {
       const response = await request(app).post('/api/parking-sessions')

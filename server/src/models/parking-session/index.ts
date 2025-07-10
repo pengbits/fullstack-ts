@@ -18,8 +18,18 @@ class ParkingSession {
     console.log(sql)
     try {
       const res = await pool.query(sql)
-      if(res.rows.length !== 1) throw new Error('expected 1 row in ParkingSession::current(), found:'+res.rows.length)
       
+      if(res.rows.length > 1) {
+        throw new Error('expected 0-1 rows in ParkingSession::current(), found:'+res.rows.length)
+      }
+
+      if(res.rows.length == 0) {
+        return {
+          duration:0,
+          meter: null
+        }
+      }
+
       const {
         meter_number,
         side_of_street,
@@ -29,7 +39,7 @@ class ParkingSession {
         cost,
         ...session
       } = res.rows[0]
-      return Promise.resolve({
+      return {
         ...session,
         cost: parseInt(cost),
         duration: getDuration(session.started, session.ends),
@@ -40,7 +50,7 @@ class ParkingSession {
           lat,
           long
         }
-      })
+      }
     }
     catch(e:any){
       throw e
