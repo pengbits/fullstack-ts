@@ -4,7 +4,7 @@ import type { MetersResponse } from "../types/api/MetersResponse"
 import type { MeterAttributes } from '../types/api/MeterAttributes';
 
 interface MarkerCollectionProps {
-  data:MetersResponse,
+  data:MetersResponse, // | MeterGroups Response
   zoom:number,
   center?:any
 }
@@ -15,6 +15,8 @@ const MarkerCollection = ({data,zoom,center}:MarkerCollectionProps) => {
     return null
   }
 
+  // or should we be looking at the presence of 'meter_groups' in the data?
+  // fork 1 level up with MarkerGroupCollection?
   if(zoom > min_zoom_to_render_distinct_markers){
     return renderAllMarkers(data.meters)
   } else {

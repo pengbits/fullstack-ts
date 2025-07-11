@@ -30,6 +30,9 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
     const center = map?.getCenter()
 
     if(!center) return
+    // can we determine the num groups using the radius and the zoom?
+    // can we be intentional about which api to call and which components 
+    // should be used to render the data at this level?
     setUrl(`/api/meters/${center.lat()},${center.lng()}/${radius}`)
   }
   
