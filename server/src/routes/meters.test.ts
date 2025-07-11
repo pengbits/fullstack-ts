@@ -31,6 +31,7 @@ describe('meters', () => {
       expectAttributes(group,[
         'lat','lon','count'
       ])
+      // how about adding up the meters in each cluster and checking the total is the same?
     })
   })
 })
