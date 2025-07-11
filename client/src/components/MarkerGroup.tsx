@@ -5,12 +5,19 @@ export interface MarkerGroupAttributes {
   lon:number,
   count:number
 }
+const handleClick = (data:MarkerGroupAttributes) => {
+  console.log('MarkerGroup#handleClick()', data)
+}
+
+
 const MarkerGroup = ({lat,lon,count}:MarkerGroupAttributes) => (<AdvancedMarker
-    key={`${lat}-${lon}`}
     position={{lat,lng:lon}}
     clickable={true}
+    onClick={e => handleClick({lat,lon,count})}
   >
-  <MarkerPin label={`${count}`} />
+  <MarkerPin label={`${count}`} 
+    data-location={`${lat},${lon}`}
+  />
 </AdvancedMarker>)
 
 export default MarkerGroup

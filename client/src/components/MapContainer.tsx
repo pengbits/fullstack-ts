@@ -33,9 +33,11 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
     // can we determine the num groups using the radius and the zoom?
     // can we be intentional about which api to call and which components 
     // should be used to render the data at this level?
-    setUrl(`/api/meters/${center.lat()},${center.lng()}/${radius}`)
+    const groups = radius > 500 ?  Math.floor(radius / 10) : ''
+    console.log(groups, radius)
+    setUrl(`/api/meters/${center.lat()},${center.lng()}/${radius}/${groups}`)
   }
-  
+
   const onZoomChanged = (zoom_:number) => {
     // console.log(`onZoomChanged: ${zoom_}`)
   }
