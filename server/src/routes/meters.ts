@@ -3,6 +3,7 @@ import Meter from '../models/meter';
 import {MetersResponse} from '../types/MetersResponse'
 import { MetersWithinRangeParams } from '../types/MetersWithinRangeParams';
 import { Point } from '../models/geo';
+import cluster from '../models/cluster';
 import { MeterGroupsResponse } from '../types/MeterGroupsResponse';
 const router = express.Router();
 
@@ -24,10 +25,22 @@ router.get('/:lat,:lon/:radius', async (req:Request<MetersWithinRangeParams>,res
 })
 
 router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRangeParams>,res:Response<MeterGroupsResponse>) => {
-  const {lat,lon,radius,num_groups} = req.params // radius is in meters
+  const {lat,lon,radius} = req.params // radius is in meters
   try {
+    const num_groups = Number(req.params.num_groups)
+    if(!num_groups) throw new Error('must provide a valid num_groups param for clustering')
     const meters = await metersWithinRange({lat,lon,radius,num_groups})
-    res.status(200).json({meter_groups:[]})
+    const data = meters.map(m => ({lat:m.lat, lon:m.long}))
+    const clusters = cluster(data, num_groups)
+    const meter_groups = clusters.centroids.map((c,i) => {
+      // console.log(i, clusters.clusters[i])
+      return {
+        lat:c.lat, 
+        lon:c.lon,
+        count:clusters.clusters[i].points.length
+      }
+    })
+    res.status(200).json({meter_groups})
   } catch(e:unknown){
     res.status(500).json({error:e, meter_groups:[]})
   }

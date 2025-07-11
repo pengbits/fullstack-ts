@@ -1,10 +1,8 @@
-import MeterAttributes from "./MeterAttributes"
+// import MeterAttributes from "./MeterAttributes"
 export interface MeterGroupAttributes {
-  centroid: {
-    lat: number,
-    long: number
-  },
+  lat: number,
+  lon: number,
   count: number,
-  meters: Array<MeterAttributes>
+  // meters: Array<MeterAttributes>
 }
 export default MeterGroupAttributes

@@ -21,12 +21,16 @@ describe('meters', () => {
   })
   describe('GET /api/meters/lat,long/radius/num_groups', () => {
     it('returns an array of meter-groups (clusters) that fall in the search area', async () => {
-      const response = await request(app).get('/api/meters/40.645344,-73.9617345/1000/5')
+      const num_groups = 20
+      const response = await request(app).get('/api/meters/40.645344,-73.9617345/400/'+num_groups)
       expect(response.status).toBe(200)
       expect(response.body.meter_groups).toBeTruthy()
-      expect(response.body.meter_groups.length).toBe(5)
-      const group = response.body.meter_groups[0]
-      console.log(group)
+      expect(response.body.meter_groups.length).toBe(num_groups)
+      const i = Math.floor(Math.random() * response.body.meter_groups.length)
+      const group = response.body.meter_groups[i]
+      expectAttributes(group,[
+        'lat','lon','count'
+      ])
     })
   })
 })
