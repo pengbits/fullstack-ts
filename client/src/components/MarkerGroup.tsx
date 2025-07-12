@@ -1,11 +1,13 @@
 
 import {AdvancedMarker} from '@vis.gl/react-google-maps';
 import MarkerPin from './MarkerPin';
-export interface MarkerGroupAttributes {
+export interface MarkerGroupLocation {
   lat:number,
   lon:number,
-  count:number,
-  handleGroupClick?:Function
+  count:number
+}
+export interface MarkerGroupAttributes extends MarkerGroupLocation{
+  handleGroupClick:Function
 }
 
 const MarkerGroup = ({lat,lon,count,handleGroupClick}:MarkerGroupAttributes) => (<AdvancedMarker

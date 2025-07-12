@@ -32,6 +32,10 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
     zoom: defaultZoom
   }
 
+  // TODO 
+  // collapse useBounds,useZoom into single useCamera hook
+  // tween the zoom and center changes that happen when clicking on a meter group if neccesary,
+  // or use panTO
   const [cameraProps, setCameraProps] =
     useState<MapCameraProps>(INITIAL_CAMERA);
   
@@ -45,7 +49,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
     // can we be intentional about which api to call and which components 
     // should be used to render the data at this level?
     const groups = radius > 500 ?  Math.floor(radius / 15) : ''
-    console.log({groups, radius})
+    // console.log({groups, radius})
     setUrl(`/api/meters/${center.lat()},${center.lng()}/${radius}/${groups}`)
   }
 
@@ -82,6 +86,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   
 
   const handleCameraChange = useCallback((ev: MapCameraChangedEvent) => {
+    console.log('handleCameraChange', ev.detail)
     setCameraProps(ev.detail)
   }, [cameraProps]);
 

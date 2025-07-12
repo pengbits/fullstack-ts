@@ -1,2 +1,3 @@
 - store cost with session
-- throttle api/dont make redundant requests for every map event
+- refactor map container hooks to use single api, animate if neccesary
+- throttle api/dont make  requests for every map camera change
