@@ -8,7 +8,6 @@ import type { MeterGroupAttributes } from "@/types/api/MeterGroupAttributes";
 interface MarkerCollectionProps {
   data:MetersResponse | MeterGroupsResponse
   zoom:number,
-  center?:any,
   handleGroupClick:Function
 }
 
