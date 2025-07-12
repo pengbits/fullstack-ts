@@ -1,19 +1,17 @@
+
 import {AdvancedMarker} from '@vis.gl/react-google-maps';
 import MarkerPin from './MarkerPin';
 export interface MarkerGroupAttributes {
   lat:number,
   lon:number,
-  count:number
-}
-const handleClick = (data:MarkerGroupAttributes) => {
-  console.log('MarkerGroup#handleClick()', data)
+  count:number,
+  handleGroupClick?:Function
 }
 
-
-const MarkerGroup = ({lat,lon,count}:MarkerGroupAttributes) => (<AdvancedMarker
+const MarkerGroup = ({lat,lon,count,handleGroupClick}:MarkerGroupAttributes) => (<AdvancedMarker
     position={{lat,lng:lon}}
     clickable={true}
-    onClick={e => handleClick({lat,lon,count})}
+    onClick={(e:any) => handleGroupClick({lat,lon,count})}
   >
   <MarkerPin label={`${count}`} 
     data-location={`${lat},${lon}`}
