@@ -5,25 +5,26 @@ interface useFetchHookReturnType {
   isError: boolean,
   isSuccess: boolean,
   data: any,
-  error: any
+  error: any,
+  fetch?: Function
 }
 
-const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType => {
+const useFetch = (url:string | null, opts:any={method:'GET'}):useFetchHookReturnType => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState()
   const [error, setError] = useState(false)
 
-  const fetchData = async () => {
+  const fetchData = async (url:string) => {
     try {
        if(['PUT','POST'].includes(opts.method) && !opts.body){
         throw new Error(`method ${opts.method} assumes a body, but none was found`)
       }
       opts.headers =  {"Content-Type": "application/json"}
       setLoading(true)
-      // console.log(url, opts)
+      console.log(url, opts)
       const response = await fetch(url, opts)
       const json = await response.json()
-      // await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       setData(json)
     } catch (e:any){
       setError(e)
@@ -32,8 +33,8 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
     }
   }
 
-  useEffect(() => {
-    url && fetchData()
+  opts.defer || useEffect(() => {
+    url && fetchData(url)
   },
 
   [url])
@@ -43,7 +44,8 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
     isError: !!error,
     isSuccess: !error,
     data,
-    error
+    error,
+    fetch: fetchData
   }
 }
 

@@ -14,7 +14,8 @@ import { getDimensionsFromBounds, getSearchRadiusFromDimensions } from '../util/
 
 import type {MarkerGroupLocation} from './MarkerGroup';
 import MarkerCollection from './MarkerCollection'
-import MarkerDetails from './MarkerDetails';
+import MarkerDetails from './MarkerDetails'
+import SearchBox from './SearchBox'
 
 export interface MapContainerProps {
   lat: number,
@@ -74,7 +75,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   } = useFetch(url)
 
 
-  const handleClick = (meter:MeterAttributes) => {
+  const handleSelectMeter = (meter:MeterAttributes) => {
     setActiveMeter(meter)
     setCameraProps(cameraProps => ({
       center:{lat:meter.lat, lng:meter.long},
@@ -83,7 +84,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   }
 
 
-return (<>
+  return (<>
     {isError && <div className='errors'>{error}</div>}
     <Map
       mapId={mapId}
@@ -97,13 +98,17 @@ return (<>
         data={data} 
         zoom={cameraProps.zoom}
         handleGroupClick={handleGroupClick}
-        handleClick={handleClick}
+        handleClick={handleSelectMeter}
       />
     </Map>
     {!!activeMeter && <MarkerDetails
       meter={activeMeter}
       onClose={e => setActiveMeter(null)} />}
+    {!activeMeter && <SearchBox 
+      onSelectMeter={handleSelectMeter}
+    />}
     </>
+    
   )
 }
 export default MapContainer

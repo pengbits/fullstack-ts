@@ -1,0 +1,24 @@
+.searchbox {
+  border: #000 solid 1px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  padding: 10px;
+  bottom: 10px;
+  background-color: rgba(255,255,255, 0.75);  
+}
+.searchbox input {
+  outline: none;
+  border: 0;
+}
+@media screen and (min-width:480px) {
+  .searchbox {
+    padding: 20px;
+    left: 25%;
+    right: 25%;
+  }
+}
+
+.searchbox.success {
+  color: green;
+}
