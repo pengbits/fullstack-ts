@@ -46,5 +46,16 @@ router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRang
   }
 })
 
+router.get('/:meter_number', async (req:Request, res:Response<MetersResponse>) => {
+  try {
+    const {meter_number} = req.params
+    const meter = await Meter.find(meter_number)
+    res.status(200).json({meters:[meter]})
+  } catch (e:unknown){
+    console.log(e)
+    res.status(500).json({error:e, meters:[]})
+  }
+})
+
 
 export default router

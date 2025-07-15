@@ -36,4 +36,11 @@ describe('meters', () => {
       // how about adding up the meters in each cluster and checking the total is the same?
     })
   })
+
+   describe('GET /api/meters/:id', () => {
+    it('returns a single meter for the specified meter_number', async() => {
+      const response = await request(app).get('/api/meters/3163052')
+      expect(response.status).toBe(200)
+    })
+   })
 })

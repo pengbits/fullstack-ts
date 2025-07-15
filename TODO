@@ -1,3 +1,3 @@
 - store cost with session
 - refactor map container hooks to use single api, animate if neccesary
-- throttle api/dont make  requests for every map camera change
+- resolve confusion re meter_number vs pay_by_cell_number: the meter number has 7 digits, the pay_by_cell has 6, but pbc is what's printed on the meters and is how we think of the object's primary key... in the code we're using meter_number every where
