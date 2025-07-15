@@ -11,7 +11,7 @@ const MarkerDetails = ({onClose,meter}:MarkerDetailsProps) => {
     <div className="marker-details">
       <h5 className="marker-details__meter-number">{meter.meter_number}</h5>
       <h4 className="marker-details_street">{meter.side_of_street} {meter.on_street}</h4>
-      <p>From Lloyd Street to Nostrand Avenue</p>
+      <p>From {meter.from_street} to {meter.to_street}</p>
       <Link to={`/sessions/new/${meter.meter_number}`}>
         Park Here
       </Link>
