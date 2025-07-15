@@ -25,7 +25,7 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
       const json = await response.json()
       // await new Promise(resolve => setTimeout(resolve, 1000))
       setData(json)
-    } catch (e){
+    } catch (e:any){
       setError(e)
     } finally {
       setLoading(false)
@@ -33,7 +33,7 @@ const useFetch = (url:string, opts:any={method:'GET'}):useFetchHookReturnType =>
   }
 
   useEffect(() => {
-    url && fetchData(url)
+    url && fetchData()
   },
 
   [url])
