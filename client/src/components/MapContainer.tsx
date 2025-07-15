@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, SetStateAction } from 'react';
 import {Map } from '@vis.gl/react-google-maps';
 import type { MapCameraProps} from '@vis.gl/react-google-maps';
 
@@ -7,15 +7,14 @@ import useMapCamera from '@/hooks/useMapCamera';
 import useFetch from '@/hooks/useFetch';
 
 
-import type {Bounds} from '../types/geo/bounds'
-import { 
-  getDimensionsFromBounds, 
-  getSearchRadiusFromDimensions 
-} from '../util/geo';
+import type {Bounds} from '@/types/geo/bounds'
+import type MeterAttributes from '@/types/api/MeterAttributes';
+import { getDimensionsFromBounds, getSearchRadiusFromDimensions } from '../util/geo';
 
 
 import type {MarkerGroupLocation} from './MarkerGroup';
 import MarkerCollection from './MarkerCollection'
+import MarkerDetails from './MarkerDetails';
 
 export interface MapContainerProps {
   lat: number,
@@ -26,7 +25,7 @@ export interface MapContainerProps {
 
 const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   const [url, setUrl] = useState('')
-
+  const [activeMeter,setActiveMeter] = useState<null | MeterAttributes>(null)
 
   const setUrlThrottled = useMemo(
     () => throttle((url: string) => {
@@ -75,6 +74,14 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   } = useFetch(url)
 
 
+  const handleClick = (meter:MeterAttributes) => {
+    setActiveMeter(meter)
+    setCameraProps(cameraProps => ({
+      center:{lat:meter.lat, lng:meter.long},
+      zoom: Math.min(cameraProps.zoom +2, 18) // not sure this is working
+    }))
+  }
+
 
 return (<>
     {isError && <div className='errors'>{error}</div>}
@@ -90,8 +97,12 @@ return (<>
         data={data} 
         zoom={cameraProps.zoom}
         handleGroupClick={handleGroupClick}
+        handleClick={handleClick}
       />
     </Map>
+    {!!activeMeter && <MarkerDetails
+      meter={activeMeter}
+      onClose={e => setActiveMeter(null)} />}
     </>
   )
 }

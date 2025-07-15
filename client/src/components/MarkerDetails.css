@@ -1,0 +1,36 @@
+.marker-details {
+  border: #000 solid 1px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  padding: 10px;
+  bottom: 10px;
+  background-color: rgba(255,255,255, 0.5);  
+}
+.marker-details__meter-number, 
+.marker-details__street {
+  margin-top: 10px;
+}
+@media screen and (min-width:480px) {
+  .marker-details {
+    padding: 20px;
+    left: 25%;
+    right: 25%;
+  }
+}
+
+.marker-details__closer {
+  border: #000 solid 1px;
+  position: absolute;
+  top:10px;
+  right: 10px;
+  padding: 10px;
+  width: 10px;
+  height: 10px;
+  font-size: 18px;
+  line-height: 10px;
+  cursor: pointer;
+}
+.marker-details__closer:hover {
+  background-color: #ccc;
+}
