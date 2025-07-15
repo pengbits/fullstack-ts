@@ -1,17 +1,18 @@
-import { useState, useCallback } from 'react';
+import throttle from 'lodash.throttle'
+import { useState, useEffect, useMemo } from 'react';
 import {Map } from '@vis.gl/react-google-maps';
 import type { MapCameraProps} from '@vis.gl/react-google-maps';
-
 
 import useMapCamera from '@/hooks/useMapCamera';
 import useFetch from '@/hooks/useFetch';
 
+
+import type {Bounds} from '../types/geo/bounds'
 import { 
   getDimensionsFromBounds, 
   getSearchRadiusFromDimensions 
 } from '../util/geo';
 
-import type {Bounds} from '../types/geo/bounds'
 
 import type {MarkerGroupLocation} from './MarkerGroup';
 import MarkerCollection from './MarkerCollection'
@@ -25,6 +26,18 @@ export interface MapContainerProps {
 
 const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   const [url, setUrl] = useState('')
+
+
+  const setUrlThrottled = useMemo(
+    () => throttle((url: string) => {
+      setUrl(url)
+    }, 500),
+    []
+  )
+
+  useEffect(() => {
+    return () => setUrlThrottled.cancel()
+  }, [setUrlThrottled])
 
   const {
     cameraProps,
@@ -41,15 +54,13 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
       const {center} = cameraProps
       if(!center) return
 
-      // TODO throttle this
       const groups = radius > 500 ?  Math.floor(radius / 15) : ''
-      setUrl(`/api/meters/${center.lat},${center.lng}/${radius}/${groups}`)  
+      setUrlThrottled(`/api/meters/${center.lat},${center.lng}/${radius}/${groups}`)  
     }
   })
 
 
-
-  const handleGroupClick = ({lat,lon,count}:MarkerGroupLocation) => {
+  const handleGroupClick = ({lat,lon}:MarkerGroupLocation) => {
     // console.log(`MapContainer#handleGroupClick ${lat},${lon} ${count}` )
     setCameraProps({
       center:{lat, lng:lon},
