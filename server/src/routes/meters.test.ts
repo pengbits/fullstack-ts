@@ -15,7 +15,9 @@ describe('meters', () => {
           'side_of_street',
           'on_street',
           'lat',
-          'long'
+          'long',
+          'from_street',
+          'to_street'
         ])
     })
   })

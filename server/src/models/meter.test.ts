@@ -14,6 +14,9 @@ describe('Meter', () => {
       expect(meter.on_street).toBe('CHURCH AVENUE')
       expect(meter.lat).toBe(40.6508226226069)
       expect(meter.long).toBe(-73.9505230216675)
+      expect(meter.from_street).toBe('LLOYD STREET')
+      expect(meter.to_street).toBe('NOSTRAND AVENUE')
+      
     })
   })
   describe('find(valid_id)', () => {

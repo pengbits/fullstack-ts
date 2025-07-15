@@ -30,7 +30,9 @@ class Meter {
     return {
       'meter_number':row.meter_number,  
       'side_of_street':row.side_of_street,
-      'on_street':row.on_street,   
+      'on_street':row.on_street, 
+      'from_street':row.from_street,
+      'to_street':row.to_street,  
       'lat':row.lat,          
       'long':row.long
     } 
