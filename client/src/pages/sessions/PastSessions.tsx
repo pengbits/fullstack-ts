@@ -6,14 +6,26 @@ const PastSessionsPage = () => {
     isLoading,
     isError,
     isSuccess,
+    error,
     data
   }  = useFetch('/api/parking-sessions')
 
-  return (
-    <div className="parking-sesions">
-      {isLoading ? <p>loading...</p> : isSuccess && <SessionList sessions={data?.sessions} />}
+  if(isSuccess && data?.sessions) return (
+    <div className="parking-sessions">
+      <SessionList sessions={data.sessions} />
     </div>
   )
+  if(isError) {
+    console.log(error)
+    return (<div className="parking-sessions error">
+      <p>An Error occurred</p>
+    </div>)
+  }
+
+  if(isLoading) return (
+    <div className="parking-sessions">
+      <p>Loading...</p>
+  </div>)
 
 }
 
