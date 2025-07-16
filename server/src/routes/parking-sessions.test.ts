@@ -2,6 +2,7 @@ import request from "supertest"
 import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
 import ParkingSession from "../models/parking-session"
+import ParkingSessionAttributes from "../types/ParkingSessionAttributes"
 import { toDate, toTimestamp, newDate, getDuration } from "../utils/date"
 import { costForDuration } from "../utils/meters"
 
@@ -18,8 +19,43 @@ describe('parking-sessions', () => {
 
       expect(response.status).toBe(200)
       expect(response.body.duration).toBe(0)
+      
     })
   })
+
+  describe('GET /api/parking-sessions', () => {
+    it('returns an array of parking sessions sorted in reverse chron order', async () => {
+      const session_attrs = [{
+        meter_number: '3163005',
+        start_time: toTimestamp(newDate().subtract(1, 'hours')),
+        duration: 30
+      },{
+        meter_number: '3163006',
+        start_time: toTimestamp(newDate().subtract(2, 'hours')),
+        duration: 60
+      },{
+        meter_number: '3163007',
+        start_time: toTimestamp(newDate().subtract(3, 'hours')),
+        duration: 10
+      }]
+
+      // const created = await Promise.all(session_attrs.map(s => {
+      //   return new Promise((resolve, reject) => ParkingSession.create(s).then(resolve))
+      // }))
+      // const {length} = created
+      await ParkingSession.create(session_attrs[0])
+      await ParkingSession.create(session_attrs[1])
+      await ParkingSession.create(session_attrs[2])
+      
+      const response = await request(app).get('/api/parking-sessions')
+      
+      expect(response.status).toBe(200)
+      const {sessions} = response.body
+      expect(sessions.length).toBe(3)
+      expect(sessions.filter((s:ParkingSessionAttributes) => !!s.active)).toHaveLength(1)
+    })
+  })
+  
   describe('POST /api/parking-sessions', () => {
     it('saves the parking-session attrs to the db', async () => {
       const response = await request(app).post('/api/parking-sessions')

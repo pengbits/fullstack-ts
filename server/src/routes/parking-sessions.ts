@@ -10,6 +10,11 @@ router.get('/parking-session', async (req:Request,res:Response) => {
   res.json(session)
 })
 
+router.get('/parking-sessions', async (req:Request,res:Response) => {
+  const sessions = await ParkingSession.find()
+  res.json({sessions})
+})
+
 router.post('/parking-sessions', async (req:Request,res:Response) => {
   try {
     const session = await ParkingSession.create(req.body)

@@ -8,9 +8,6 @@ import { costForDuration } from "../../utils/meters"
 
 class ParkingSession {
   static async current () {
-    // TODO order by started might make more sense,
-    // either way we need to enforce the constraing of there being only 1 active session
-    // it's not bulletproof like this
     const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
     FROM parking_sessions AS s
     JOIN meters AS m ON s.meter_number=m.meter_number
