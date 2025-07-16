@@ -1,0 +1,18 @@
+.parking-sessions {
+  margin: 0;
+  padding: 15px;
+}
+.parking-sessions .session {
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: #ccc solid 2px;
+  display: flex;
+}
+.session .body {
+  flex-basis: 80%;
+}
+.session .footer {
+  flex-basis: 20%;
+  text-align: right;
+}
