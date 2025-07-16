@@ -27,30 +27,34 @@ class ParkingSession {
         }
       }
 
-      const {
+      return this.getSessionAttributesFromRow(res.rows[0])
+    }
+    catch(e:any){
+      throw e
+    }
+  }
+
+  static getSessionAttributesFromRow = (row:any) => {
+    const {
+      meter_number,
+      side_of_street,
+      on_street,
+      lat,
+      long,
+      cost,
+      ...session
+    } = row
+    return {
+      ...session,
+      cost: parseInt(cost),
+      duration: getDuration(session.started, session.ends),
+      meter: {
         meter_number,
         side_of_street,
         on_street,
         lat,
-        long,
-        cost,
-        ...session
-      } = res.rows[0]
-      return {
-        ...session,
-        cost: parseInt(cost),
-        duration: getDuration(session.started, session.ends),
-        meter: {
-          meter_number,
-          side_of_street,
-          on_street,
-          lat,
-          long
-        }
+        long
       }
-    }
-    catch(e:any){
-      throw e
     }
   }
 
@@ -131,10 +135,12 @@ class ParkingSession {
   }
 
   static async find () {
-    const sql = `SELECT * FROM parking_sessions` 
+    const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
+    FROM parking_sessions AS s
+    JOIN meters AS m ON s.meter_number=m.meter_number`
     console.log(sql)
     const res = await pool.query(sql)
-    return res.rows
+    return res.rows.map(r => this.getSessionAttributesFromRow(r))
   }
 }
 

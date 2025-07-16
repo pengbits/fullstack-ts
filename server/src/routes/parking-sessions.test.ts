@@ -39,6 +39,7 @@ describe('parking-sessions', () => {
         duration: 10
       }]
 
+      // this results in multiple active sessions, do not attempt!
       // const created = await Promise.all(session_attrs.map(s => {
       //   return new Promise((resolve, reject) => ParkingSession.create(s).then(resolve))
       // }))
@@ -53,6 +54,12 @@ describe('parking-sessions', () => {
       const {sessions} = response.body
       expect(sessions.length).toBe(3)
       expect(sessions.filter((s:ParkingSessionAttributes) => !!s.active)).toHaveLength(1)
+      expectAttributes(sessions[0], ["meter", "active", "ends", "started", "id", "cost"])
+      expect(sessions[0].cost).toBeTruthy()
+      expect(sessions[0].meter).toEqual(expect.objectContaining({
+        on_street:expect.any(String),
+        side_of_street:expect.any(String),
+      }))
     })
   })
   
