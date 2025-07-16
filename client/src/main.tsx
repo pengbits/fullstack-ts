@@ -8,6 +8,7 @@ import NewSessionPage     from './pages/sessions/NewSession'
 import EditSessionPage from './pages/sessions/EditSession.tsx';
 import ConfirmSessionPage from './pages/sessions/ConfirmSession'
 import ActiveSessionPage  from './pages/sessions/ActiveSession'
+import PastSessionsPage from './pages/sessions/PastSessions.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,9 @@ const router = createBrowserRouter([
     },{
       path:'/sessions/active',
       Component: ActiveSessionPage
+    },{
+      path:'/sessions/past',
+      Component: PastSessionsPage
     }]
   }
 ])

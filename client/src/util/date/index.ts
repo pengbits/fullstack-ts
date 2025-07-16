@@ -12,8 +12,9 @@ export const toDate = (date:string | Date) => {
   return dayjs(date)
 }
 
-export const pretty = (dateStr:string | Dayjs) => {
-  return dayjs(dateStr).format('MMM DD YYYY h:mm A')
+const default_format = 'MMM DD YYYY h:mm A'
+export const pretty = (dateStr:string | Dayjs, format:string | undefined) => {
+  return dayjs(dateStr).format(format || default_format)
 }
 
 export const addMins = (date:string | Dayjs, mins:number) => {
