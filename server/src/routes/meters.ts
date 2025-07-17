@@ -60,7 +60,7 @@ router.get('/:meter_number', async (req:Request, res:Response<MetersResponse>, n
     res.status(200).json({meters:[meter]})
   } catch (e:unknown){
     if(e instanceof ModelNotFoundException){
-      next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.invalidMeterNumber))
+      next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.meterDoesntExist))
     }
     next(e)
   }

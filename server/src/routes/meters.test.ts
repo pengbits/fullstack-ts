@@ -53,7 +53,7 @@ describe('meters', () => {
     it('returns a 404 error for nonexistent meter_id param', async () => {
       const response = await request(app).get('/api/meters/1234567')
       expect(response.status).toBe(404)
-      expect(response.body.message).toBe('Invalid Meter Number')
+      expect(response.body.message).toBe('Meter does not exist')
     })
   })
 })
