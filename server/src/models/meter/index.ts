@@ -1,5 +1,6 @@
 import { Point } from "../geo";
 import pool from "../../db/pool";
+import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException";
 import { MeterAttributes } from "../../types/MeterAttributes";
 import {QueryResultRow} from 'pg'
 
@@ -9,7 +10,7 @@ class Meter {
     SELECT * FROM meters WHERE meter_number=$1`
     console.log(sql, [id])
     const result = await pool.query(sql, [id])
-    if(result.rows.length !== 1) throw new Error(`expected 1 rows for meter_number:${id}, found:${result.rows.length}`)
+    if(result.rows.length !== 1) throw new ModelNotFoundException('Meter', {'meter_number':id})
     
     return this.serializeRow(result.rows[0])
   }

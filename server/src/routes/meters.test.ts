@@ -37,10 +37,23 @@ describe('meters', () => {
     })
   })
 
-   describe('GET /api/meters/:id', () => {
+  describe('GET /api/meters/:id', () => {
     it('returns a single meter for the specified meter_number', async() => {
       const response = await request(app).get('/api/meters/3163052')
       expect(response.status).toBe(200)
     })
-   })
+  })
+
+  describe('GET /api/meters/:invalid_id', () => {
+    it('returns a 400 error for bad (non-numeric) meter_id param', async () => {
+      const response = await request(app).get('/api/meters/foo')
+      expect(response.status).toBe(400)
+      expect(response.body.message).toBe('Invalid Meter Number')
+    })
+    it('returns a 404 error for nonexistent meter_id param', async () => {
+      const response = await request(app).get('/api/meters/1234567')
+      expect(response.status).toBe(404)
+      expect(response.body.message).toBe('Invalid Meter Number')
+    })
+  })
 })

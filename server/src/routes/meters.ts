@@ -1,10 +1,13 @@
-import express, {Request,Response} from 'express';
+import express, {Request,Response,NextFunction} from 'express';
 import Meter from '../models/meter';
 import {MetersResponse} from '../types/MetersResponse'
 import { MetersWithinRangeParams } from '../types/MetersWithinRangeParams';
 import { Point } from '../models/geo';
 import cluster from '../models/cluster';
 import { MeterGroupsResponse } from '../types/MeterGroupsResponse';
+import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/";
+import { HttpException } from "../exceptions/HttpException";
+import { ModelNotFoundException } from '../exceptions/ModelNotFoundException';
 const router = express.Router();
 
 const metersWithinRange = async ({lat,lon,radius}:MetersWithinRangeParams) => {
@@ -46,14 +49,20 @@ router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRang
   }
 })
 
-router.get('/:meter_number', async (req:Request, res:Response<MetersResponse>) => {
+router.get('/:meter_number', async (req:Request, res:Response<MetersResponse>, next:NextFunction) => {
   try {
     const {meter_number} = req.params
+    // TODO move to seperate validator file
+    if(isNaN(parseInt(meter_number))) {
+      throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, APP_ERROR_MESSAGE.invalidMeterNumber)
+    }
     const meter = await Meter.find(meter_number)
     res.status(200).json({meters:[meter]})
   } catch (e:unknown){
-    console.log(e)
-    res.status(500).json({error:e, meters:[]})
+    if(e instanceof ModelNotFoundException){
+      next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.invalidMeterNumber))
+    }
+    next(e)
   }
 })
 

@@ -2,6 +2,7 @@ import express, {Request,Response} from "express";
 import bodyParser from "body-parser";
 import logger from 'morgan'
 import cors from 'cors'
+import errorsMiddleware from "./middleware/errors";
 import routes from "./routes";
 
 
@@ -15,8 +16,8 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(cors())
+
 app.use('/api',         routes.parkingSessions)
 app.use('/api/meters',  routes.meters)
-
-
+app.use(errorsMiddleware)
 export default app
