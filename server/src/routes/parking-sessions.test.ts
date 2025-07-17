@@ -93,6 +93,7 @@ describe('parking-sessions', () => {
         })
         .set('Accept', 'application/json')
       expect(response.status).toBe(400)
+      console.log(response.body)
       expect(response.body.success).toBe(false)
     })
   })

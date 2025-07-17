@@ -3,6 +3,7 @@ import pool from "../../db/pool"
 import ParkingSessionAttributes from "../../types/ParkingSessionAttributes"
 import CreateParkingSessionParams from "../../types/CreateParkingSessionParams"
 import Meter from "../meter"
+import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException"
 import { getDuration, toDate, toTimestamp } from "../../utils/date"
 import { costForDuration } from "../../utils/meters"
 
@@ -60,12 +61,13 @@ class ParkingSession {
 
   static async create(attrs:CreateParkingSessionParams): Promise<ParkingSessionAttributes> {
     // TODO validate elsewhere
-    if(!attrs.meter_number) throw new Error('Meter number is required')
-    if(!attrs.start_time)   throw new Error('Start time is required')
-    if(!attrs.duration)     throw new Error('Duration is required')
+    if(!attrs.meter_number) throw new InvalidAttrsException('Meter','Meter number is required')
+    if(!attrs.start_time)   throw new InvalidAttrsException('Meter','Start time is required')
+    if(!attrs.duration)     throw new InvalidAttrsException('Meter','Duration is required')
     
     try {
       const meter = await Meter.find(attrs.meter_number)
+      // if(!meter)
       await this.unsetActive()
       
       const start = toDate(attrs.start_time)
