@@ -1,2 +1,2 @@
-- animate map updates to make them smoother
+- add wallet and core 'account' features
 - resolve confusion re meter_number vs pay_by_cell_number: the meter number has 7 digits, the pay_by_cell has 6, but pbc is what's printed on the meters and is how we think of the object's primary key... in the code we're using meter_number every where
