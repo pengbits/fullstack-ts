@@ -2,6 +2,12 @@
   position: relative;
 }
 .map {
-  height: 90vh;
+  height: 85vh;
   width: 100vw;
+}
+
+@media screen and (min-width:600px) {
+  .map {
+    height: 90vh;
+  }
 }
