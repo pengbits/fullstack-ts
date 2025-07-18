@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest'
 import { screen, act } from '@testing-library/react';
-import {renderWithMapAPI} from '../../test/renderMapUtils'
+import {renderWithMapAPI} from '../../../test/renderMapUtils'
 import Map from './Map';
 
 

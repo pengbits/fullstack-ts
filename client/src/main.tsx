@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router";
 import './index.css'
 import App from './App.tsx'
-import MapPage from './pages/Map'
+import MapPage from './pages/maps/Map.tsx'
 import NewSessionPage     from './pages/sessions/NewSession'
 import EditSessionPage from './pages/sessions/EditSession.tsx';
 import ConfirmSessionPage from './pages/sessions/ConfirmSession'
