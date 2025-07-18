@@ -18,6 +18,11 @@
   height: 100px;
   width: 100px;
   text-align: center;
+  color: #000;
+  text-decoration: none;
+}
+.nav a:hover {
+  text-decoration: underline;
 }
 .nav a .icon {
   display: block;
@@ -27,5 +32,16 @@
   transform: translateX(-50%);
   height: 40px;
   width: 40px;
-  background-color: purple;
+  background-size: contain;
+}
+.nav a:hover .icon {
+}
+.icon.parking {
+  background-image: url(/icons/parking.svg);
+}
+.icon.sessions {
+  background-image: url(/icons/sessions.svg);
+}
+.icon.account {
+  background-image: url(/icons/account.svg);
 }
