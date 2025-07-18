@@ -36,13 +36,13 @@ router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRang
     const data = meters.map(m => ({lat:m.lat, lon:m.long}))
     const clusters = cluster(data, num_groups)
     const meter_groups = clusters.centroids.map((c,i) => {
-      // console.log(i, clusters.clusters[i])
       return {
         lat:c.lat, 
         lon:c.lon,
         count:clusters.clusters[i].points.length
       }
-    })
+    }).filter(group => group.count > 0)
+    
     res.status(200).json({meter_groups})
   } catch(e:unknown){
     res.status(500).json({error:e, meter_groups:[]})
@@ -52,7 +52,7 @@ router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRang
 router.get('/:meter_number', async (req:Request, res:Response<MetersResponse>, next:NextFunction) => {
   try {
     const {meter_number} = req.params
-    // TODO move to seperate validator file
+    // TODO move to separate validator file
     if(isNaN(parseInt(meter_number))) {
       throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, APP_ERROR_MESSAGE.invalidMeterNumber)
     }
