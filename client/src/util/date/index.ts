@@ -13,7 +13,8 @@ export const toDate = (date:string | Date) => {
 }
 
 const default_format = 'MMM DD YYYY h:mm A'
-export const pretty = (dateStr:string | Dayjs, format:string | undefined) => {
+
+export const pretty = (dateStr:string | Dayjs, format?:string) => {
   return dayjs(dateStr).format(format || default_format)
 }
 

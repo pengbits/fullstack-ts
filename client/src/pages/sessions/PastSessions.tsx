@@ -1,5 +1,6 @@
 import useFetch from "@/hooks/useFetch"
 import SessionList from "@/components/sessions/SessionList"
+import SessionsNav from "@/components/sessions/SessionsNav"
 
 const PastSessionsPage = () => {
   const {
@@ -10,23 +11,33 @@ const PastSessionsPage = () => {
     data
   }  = useFetch('/api/parking-sessions')
 
+  return (<div className="sessions-container">
+    <SessionsNav />
+    {renderContent({data,isError,isLoading,isSuccess})}
+  </div>)
+}
+
+interface ContentProps {
+  data: any,
+  isLoading: boolean,
+  isError: boolean,
+  isSuccess: boolean
+}
+
+const renderContent = ({data,isLoading,isSuccess,isError}:ContentProps) => {
   if(isSuccess && data?.sessions) return (
-    <div className="parking-sessions">
       <SessionList sessions={data.sessions} />
-    </div>
   )
+
   if(isError) {
-    console.log(error)
-    return (<div className="parking-sessions error">
+    (<div className="parking-sessions error">
       <p>An Error occurred</p>
     </div>)
   }
 
   if(isLoading) return (
-    <div className="parking-sessions">
       <p>Loading...</p>
-  </div>)
-
+  )
 }
 
 export default PastSessionsPage

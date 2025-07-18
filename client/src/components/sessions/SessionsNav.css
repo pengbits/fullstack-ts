@@ -1,0 +1,30 @@
+.sessions-container {
+  padding-top: 60px;
+  overflow-y: auto;
+}
+.sessions-nav {
+  top:0;
+  left:0;
+  right:0;
+  position: fixed;
+  display:  flex;
+  border-bottom: #666 solid 1px;
+  height: 60px;
+  align-items: center;
+}
+.sessions-nav a {
+  display: block;
+  padding: 19px 15px;
+  height: 18px;
+  flex-basis: 50%;
+  text-align: center;
+  color: #000;
+  border-bottom: transparent solid 4px;
+  text-decoration: none;
+}
+.sessions-nav a:hover {
+  text-decoration: underline;
+}
+.sessions-nav a.active {
+  border-bottom:#666 solid 4px;
+}

@@ -3,7 +3,8 @@
   bottom:0;
   width: 100%;
   height:  15vh;
-  border-top:#333 solid 1px
+  border-top:#333 solid 1px;
+  background-color: #FFF;
 }
 @media screen and (min-width:600px) {
   .nav-container {
