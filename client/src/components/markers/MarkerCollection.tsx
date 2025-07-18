@@ -8,6 +8,7 @@ import type { MeterGroupAttributes } from "@/types/api/MeterGroupAttributes";
 interface MarkerCollectionProps {
   data:MetersResponse | MeterGroupsResponse
   zoom:number,
+  activeMeter:MeterAttributes,
   handleGroupClick:Function,
   handleClick:Function
 }
@@ -16,13 +17,14 @@ const isGrouped = (data:MetersResponse | MeterGroupsResponse): data is MeterGrou
   typeof data === 'object' && data !== null &&
   Object.prototype.hasOwnProperty.call(data, 'meter_groups')
 
-const MarkerCollection = ({data,handleGroupClick,handleClick}:MarkerCollectionProps) => {
+const MarkerCollection = ({data,activeMeter,handleGroupClick,handleClick}:MarkerCollectionProps) => {
   if(!data) return null
 
   if(isGrouped(data)){
     return renderMarkerGroups((data.meter_groups || []), handleGroupClick)
   } else {
-    return renderMarkers((data.meters || []), handleClick)
+    const {meter_number} = activeMeter || {}
+    return renderMarkers((data.meters || []), meter_number, handleClick)
   }
 }
 
@@ -37,9 +39,10 @@ const renderMarkerGroups = (meter_groups:Array<MeterGroupAttributes>, handleGrou
   ></MarkerGroup> 
 }))
 
-const renderMarkers = (meters:Array<MeterAttributes>, handleClick:Function) => (meters.map((attrs) => {
+const renderMarkers = (meters:Array<MeterAttributes>, activeMeterNumber:string, handleClick:Function) => (meters.map((attrs) => {
   return <Marker 
     key={attrs.meter_number} 
+    active={activeMeterNumber && attrs.meter_number === activeMeterNumber}
     handleClick={handleClick}
     {...attrs} 
   />

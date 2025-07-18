@@ -104,6 +104,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
         zoom={cameraProps.zoom}
         handleGroupClick={handleGroupClick}
         handleClick={handleSelectMeter}
+        activeMeter={activeMeter}
       />
     </Map>
     {!!activeMeter && <MarkerDetails

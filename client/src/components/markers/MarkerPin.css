@@ -6,6 +6,11 @@
   padding: 8px 10px;
   border-radius: 15px;
   height: 10px;
+  transition: transform 0.125s ease-in;
+}
+.active .marker-pin {
+  background-color:red;
+  transform: scale(120%);
 }
 
 .marker-pin .tail {
@@ -18,4 +23,7 @@
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   border-top: 24px solid rgb(1, 1, 190);
+}
+.active .marker-pin .tail{
+  border-top-color: red
 }
