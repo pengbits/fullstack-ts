@@ -7,7 +7,7 @@ export const Nav = () => (
       <i className="icon parking"></i>
       Parking
     </Link>
-    <Link className="sessions" to="/sessions/past">
+    <Link className="sessions" to="/sessions/active">
       <i className="icon sessions"></i>
       My Sessions
     </Link>
