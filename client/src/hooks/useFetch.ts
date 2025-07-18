@@ -21,12 +21,12 @@ const useFetch = (url:string | null, opts:any={method:'GET'}):useFetchHookReturn
       }
       opts.headers =  {"Content-Type": "application/json"}
       setLoading(true)
-      console.log(url, opts)
+      // console.log(url, opts)
       const response = await fetch(url, opts)
       // TODO handle 404 and 500
       // console.log(response.status)
       const json = await response.json()
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // await new Promise(resolve => setTimeout(resolve, 1000))
       setData(json)
     } catch (e:any){
       setError(e)

@@ -1,7 +1,7 @@
 import Marker from "./Marker"
-import MarkerGroup from '@/components/MarkerGroup'
-import type { MetersResponse } from "../types/api/MetersResponse"
-import type { MeterAttributes } from '../types/api/MeterAttributes';
+import MarkerGroup from '@/components/markers/MarkerGroup'
+import type { MetersResponse } from "@/types/api/MetersResponse"
+import type { MeterAttributes } from '@/types/api/MeterAttributes';
 import type { MeterGroupsResponse } from "@/types/api/MeterGroupsResponse";
 import type { MeterGroupAttributes } from "@/types/api/MeterGroupAttributes";
 

@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle'
-import { useState, useEffect, useMemo, SetStateAction } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {Map } from '@vis.gl/react-google-maps';
 import type { MapCameraProps} from '@vis.gl/react-google-maps';
 
@@ -9,13 +9,13 @@ import useFetch from '@/hooks/useFetch';
 
 import type {Bounds} from '@/types/geo/bounds'
 import type MeterAttributes from '@/types/api/MeterAttributes';
-import { getDimensionsFromBounds, getSearchRadiusFromDimensions } from '../util/geo';
+import { getDimensionsFromBounds, getSearchRadiusFromDimensions } from '@/util/geo';
 
 
-import type {MarkerGroupLocation} from './MarkerGroup';
-import MarkerCollection from './MarkerCollection'
-import MarkerDetails from './MarkerDetails'
-import SearchBox from './SearchBox'
+import type {MarkerGroupLocation} from '@/components/markers/MarkerGroup';
+import MarkerCollection from '@/components/markers/MarkerCollection'
+import MarkerDetails from '@/components/markers/MarkerDetails'
+import SearchBox from '@/components/maps/SearchBox'
 
 import './MapContainer.css'
 
