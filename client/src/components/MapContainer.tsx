@@ -17,6 +17,8 @@ import MarkerCollection from './MarkerCollection'
 import MarkerDetails from './MarkerDetails'
 import SearchBox from './SearchBox'
 
+import './MapContainer.css'
+
 export interface MapContainerProps {
   lat: number,
   lon: number,
@@ -84,11 +86,11 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   }
 
 
-  return (<>
+  return (<div className="map-container">
     {isError && <div className='errors'>{error}</div>}
     <Map
+      className="map"
       mapId={mapId}
-      style={{width: '100vw', height: '100vh'}}
       {...cameraProps}
       onCameraChanged={onCameraChanged}
       gestureHandling={'greedy'}
@@ -107,7 +109,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
     {!activeMeter && <SearchBox 
       onSelectMeter={handleSelectMeter}
     />}
-    </>
+    </div>
     
   )
 }
