@@ -44,6 +44,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
   const {
     cameraProps,
     setCameraProps,
+    animateCamera,
     onCameraChanged
   } = useMapCamera({
     cameraProps: {
@@ -64,8 +65,9 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
 
   const handleGroupClick = ({lat,lon}:MarkerGroupLocation) => {
     // console.log(`MapContainer#handleGroupClick ${lat},${lon} ${count}` )
-    setCameraProps({
-      center:{lat, lng:lon},
+    animateCamera({
+      lat, 
+      lng:lon,
       zoom: Math.min(cameraProps.zoom +1, 18)
     })
   }
@@ -79,10 +81,11 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
 
   const handleSelectMeter = (meter:MeterAttributes) => {
     setActiveMeter(meter)
-    setCameraProps(cameraProps => ({
-      center:{lat:meter.lat, lng:meter.long},
+    animateCamera({
+      lat:meter.lat, 
+      lng:meter.long,
       zoom: Math.min(cameraProps.zoom +2, 18) // not sure this is working
-    }))
+    })
   }
 
 

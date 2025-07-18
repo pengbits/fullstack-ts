@@ -17,8 +17,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@gsap/react": "^2.1.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@types/gsap": "^3.0.0",
     "@types/lodash": "^4.17.20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -30,6 +32,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "gsap": "^3.13.0",
     "jsdom": "^26.1.0",
     "lodash.throttle": "^4.1.1",
     "react-router": "^7.6.3",
