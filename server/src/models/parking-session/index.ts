@@ -4,8 +4,10 @@ import ParkingSessionAttributes from "../../types/ParkingSessionAttributes"
 import CreateParkingSessionParams from "../../types/CreateParkingSessionParams"
 import Meter from "../meter"
 import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException"
+import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException"
 import { getDuration, toDate, toTimestamp } from "../../utils/date"
 import { costForDuration } from "../../utils/meters"
+import Wallet from "../wallet"
 
 class ParkingSession {
   static async current () {
@@ -67,12 +69,16 @@ class ParkingSession {
     
     try {
       const meter = await Meter.find(attrs.meter_number)
-      // if(!meter)
+      if(!meter) throw new ModelNotFoundException('meter', attrs)
       await this.unsetActive()
       
       const start = toDate(attrs.start_time)
       const end   = start.add(attrs.duration, 'minute')
       const cost  = costForDuration(attrs.duration)
+      
+      const wallet = await Wallet.findOrCreate()
+      wallet.decrement(cost)
+      await wallet.save()
       
       const sql = `
       INSERT INTO parking_sessions (meter_number, started, ends, active, cost)
