@@ -7,7 +7,6 @@ const PastSessionsPage = () => {
     isLoading,
     isError,
     isSuccess,
-    error,
     data
   }  = useFetch('/api/parking-sessions')
 

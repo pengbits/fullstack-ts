@@ -31,7 +31,8 @@ export const SearchBox = ({onSelectMeter}:SearchBoxProps) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     
-    // TODO fetch automatically if search is long enough?
+    // TODO fetch automatically if search text is long enough,
+    // but throttle requests
     if(isValidMeterNumber(search) && fetch){
       setIsFetching(true)
       fetch( `/api/meters/${search}`)
