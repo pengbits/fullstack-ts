@@ -9,6 +9,8 @@ import EditSessionPage from './pages/sessions/EditSession.tsx';
 import ConfirmSessionPage from './pages/sessions/ConfirmSession'
 import ActiveSessionPage  from './pages/sessions/ActiveSession'
 import PastSessionsPage from './pages/sessions/PastSessions.tsx';
+import AccountPage from './pages/account/AccountPage.tsx';
+import PaymentDetailsPage from './pages/account/PaymentDetailsPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,12 @@ const router = createBrowserRouter([
     },{
       path:'/sessions/past',
       Component: PastSessionsPage
+    },{
+      path:'/account',
+      Component: AccountPage
+    },{
+      path:'/account/payment-details',
+      Component: PaymentDetailsPage
     }]
   }
 ])

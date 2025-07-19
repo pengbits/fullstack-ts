@@ -11,10 +11,10 @@ export const Nav = () => (
       <i className="icon sessions"></i>
       My Sessions
     </Link>
-    <a className="account" href="#">
+    <Link className="account" to="/account">
       <i className="icon account"></i>
       My Account
-    </a>
+    </Link>
   </nav>
 </footer>)
 
