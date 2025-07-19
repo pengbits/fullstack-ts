@@ -19,5 +19,6 @@ app.use(cors())
 
 app.use('/api',         routes.parkingSessions)
 app.use('/api/meters',  routes.meters)
+app.use('/api/wallets', routes.wallets)
 app.use(errorsMiddleware)
 export default app
