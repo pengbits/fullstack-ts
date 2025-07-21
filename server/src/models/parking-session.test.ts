@@ -40,7 +40,19 @@ describe('ParkingSession', () => {
       const current = await ParkingSession.current()
       expect(current.meter.meter_number).toBe('3043055')
     })
+    
+    test('returns a session with duration=0 if last active session has expired', async () => {
+      await ParkingSession.deleteAll()
+      const expired = await ParkingSession.create({
+        meter_number: '3163027',
+        start_time: toTimestamp(newDate().subtract(15, 'minutes')),
+        duration: 10,
+      })
+      const c = await ParkingSession.current()
+      expect(c).toEqual({duration:0})
+    })
   })
+
   describe('new()', () => {
     test('creates a new session for the meter_number and duration provided', async () => {
       const s = await ParkingSession.create({
