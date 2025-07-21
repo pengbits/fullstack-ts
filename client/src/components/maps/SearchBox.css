@@ -9,8 +9,26 @@
 }
 .searchbox input {
   outline: none;
-  border: 0;
+  border:0;
+  height: 15px;
+  width: 100%;
+  background-color: transparent;
 }
+.closer {
+  position: absolute;
+  right: 15px;
+  top:22px;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  line-height: 15px;
+  cursor: pointer;
+}
+.closer:hover {
+  background-color: #333;
+  color: #FFF;
+}
+
 @media screen and (min-width:480px) {
   .searchbox {
     padding: 20px;

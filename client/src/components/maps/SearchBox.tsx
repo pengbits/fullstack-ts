@@ -1,4 +1,5 @@
-import {  useState } from "react"
+import throttle from 'lodash.throttle'
+import {  useState, useEffect, useMemo, useCallback } from "react"
 import useFetch from "@/hooks/useFetch"
 import './SearchBox.css'
 
@@ -13,46 +14,62 @@ const isValidMeterNumber = (m:string) => (
 
 export const SearchBox = ({onSelectMeter}:SearchBoxProps) => {
   const [search,setSearch] = useState('')
+  const [url,setUrl] = useState('')
   const [isFetching,setIsFetching] = useState(false)
   const {
     isLoading,
     isError,
-    isSuccess,
     error,
     data,
-    fetch
-  } = useFetch(null, {defer:true})
+  } = useFetch(url)
 
+  const setUrlThrottled = useMemo(
+    () => throttle((url: string) => {
+      setUrl(url)
+    }, 500),
+    []
+  )
+
+  useEffect(() => {
+    return () => setUrlThrottled.cancel()
+  }, [setUrlThrottled])
 
   const handleChange = (e) => {
     setSearch(e.target.value)
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    
-    // TODO fetch automatically if search text is long enough,
-    // but throttle requests
-    if(isValidMeterNumber(search) && fetch){
+    if(isValidMeterNumber(e.target.value)){
       setIsFetching(true)
-      fetch( `/api/meters/${search}`)
+      setUrlThrottled(`/api/meters/${e.target.value}`)
     }
   }
 
+  const handleReset = (e) => {
+    setSearch('')
+    setIsFetching(false)
+  }
+
+
   if(!isFetching && !isLoading) return (
-  <form className="searchbox" onSubmit={handleSubmit}>
+  <form className="searchbox">
     <input type="text" 
       onChange={handleChange}
       placeholder="Ender Zone ID"
       value={search} 
     />
+    {search.length > 0 && <span onClick={handleReset}
+      className="closer">x</span>}
   </form>)
 
   if(isLoading) return (<div className="searchbox">
     Loading...
   </div>)
 
-  // TODO handle unhappy paths
+  if(isError) {
+    return (<div className="searchbox error">
+      {error.message} <span onClick={handleReset}
+      className="closer">x</span>
+    </div>)
+  }
+  // TODO add a way to recover from errors
   if(!isLoading && isFetching) {
     if(data && data.meters.length === 1) onSelectMeter(data.meters[0])
     else console.log('bad response', data, error)
