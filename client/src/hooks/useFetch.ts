@@ -20,14 +20,17 @@ const useFetch = (url:string | null, opts:any={method:'GET'}):useFetchHookReturn
         throw new Error(`method ${opts.method} assumes a body, but none was found`)
       }
       opts.headers =  {"Content-Type": "application/json"}
+      setError(false)
       setLoading(true)
       // console.log(url, opts)
       const response = await fetch(url, opts)
-      // TODO handle 404 and 500
-      // console.log(response.status)
       const json = await response.json()
-      // await new Promise(resolve => setTimeout(resolve, 1000))
-      setData(json)
+      
+      if(response.status > 201){
+        setError(json)
+      } else {
+        setData(json)
+      }
     } catch (e:any){
       setError(e)
     } finally {
