@@ -22,6 +22,10 @@ const ActiveSessionPage = () => {
     meter
   } = data || {}
 
+  // if the only sessions left in db is expired, it will be returned with this shape:
+  // {duration:0}
+  // a more semantic response might be simply [] (empty array), but then we would have
+  // to go back and change the expected response types everywhere
   return <div className="sessions-container">
     <SessionsNav />
     {(meter ? <SessionDetails 
