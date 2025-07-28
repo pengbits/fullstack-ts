@@ -111,22 +111,33 @@ class ParkingSession {
 
   static async update (attrs:any){
     try {
-      let sql = `SELECT started, ends, id FROM parking_sessions ORDER BY ends DESC LIMIT 1`
+      let sql = `SELECT started, ends, id, cost FROM parking_sessions ORDER BY ends DESC LIMIT 1`
       console.log(sql) 
       let res = await pool.query(sql)
       if(res.rows.length !== 1) throw new Error('expected 1 row in ParkingSession::update, found:'+res.rows.length)
       const session = res.rows[0]
-      const {id,started} = session
+      const {id,started,cost} = session
 
       if(!attrs.duration || attrs.duration < 0) throw new Error(`invalid duration provided: ${attrs.duration}`)
       const ends = toDate(started).add(attrs.duration, 'minutes')
-      const cost = costForDuration(attrs.duration)
+      const newCost = costForDuration(attrs.duration)
+
+      // TODO:
+      // currently our 'extend' model doesn't take into account the duration/amount already paid for,
+      // it's just a naive crud UPDATE, swapping out the original duration for a new (presumably longer) one.
+      // realistically, this should treat the incoming duration as the amount to extend by, ie, additional time only,
+      // which means this wallet logic has to change as well. unless of course we handle that discrepency in the client,
+      // extracting the duration from the form and adding it to existing duration before making the PUT call
+      const wallet = await Wallet.findOrCreate()
+      wallet.decrement(newCost - cost)
+      await wallet.save()
+
       sql = `UPDATE parking_sessions SET ends=$1, cost=$2 WHERE id=$3;`;
-      console.log(sql, [toTimestamp(ends), cost, id])
-      res = await pool.query(sql, [toTimestamp(ends), cost, id])
+      console.log(sql, [toTimestamp(ends), newCost, id])
+      res = await pool.query(sql, [toTimestamp(ends), newCost, id])
       return {
         ...session,
-        cost,
+        cost: newCost,
         ends
       }
     } catch (e:any){
