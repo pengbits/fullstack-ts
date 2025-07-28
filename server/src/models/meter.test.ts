@@ -31,7 +31,7 @@ describe('Meter', () => {
       try {
         await Meter.find('555555')
       } catch (error:any){
-        expect(error.message).toMatch(/^expected 1 rows for/)
+        expect(error.message).toMatch(/^could not find Meter in db/)
       }
     })
   })
