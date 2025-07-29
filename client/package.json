@@ -9,7 +9,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "common:link":"cd src && ln -s ../../common ./common",
+    "common:unlink":"cd src && rm ./common"
   },
   "dependencies": {
     "react": "^19.1.0",

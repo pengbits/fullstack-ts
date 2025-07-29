@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch 'src/**' --ext 'ts,json' --exec 'ts-node src/index.ts'",
-    "test": "jest --watchAll --detectOpenHandles"
+    "test": "jest --watchAll --detectOpenHandles",
+    "common:link":"cd src && ln -s ../../common ./common",
+    "common:unlink":"cd src && rm ./common"
   },
   "author": "",
   "license": "ISC",
