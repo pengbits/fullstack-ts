@@ -1,7 +1,7 @@
 import { Point } from "../geo";
 import pool from "../../db/pool";
 import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException";
-import { MeterAttributes } from "../../types/MeterAttributes";
+import { MeterAttributes } from "../../common/types/api/MeterAttributes";
 import {QueryResultRow} from 'pg'
 
 class Meter {  

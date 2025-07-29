@@ -1,5 +1,5 @@
 import pool from "../../db/pool";
-import WalletAttributes from "../../types/WalletAttributes"
+import {WalletAttributes} from "../../common/types/api/WalletAttributes"
 
 const initial_balance = 2000
 

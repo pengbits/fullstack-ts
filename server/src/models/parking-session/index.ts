@@ -1,7 +1,7 @@
 import pool from "../../db/pool"
 
-import ParkingSessionAttributes from "../../types/ParkingSessionAttributes"
-import CreateParkingSessionParams from "../../types/CreateParkingSessionParams"
+import {ParkingSessionAttributes} from "../../common/types/api/ParkingSessionAttributes"
+import {CreateParkingSessionParams} from "../../common/types/api/CreateParkingSessionParams"
 import Meter from "../meter"
 import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException"
 import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException"

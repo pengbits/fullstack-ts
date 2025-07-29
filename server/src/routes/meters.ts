@@ -1,10 +1,10 @@
 import express, {Request,Response,NextFunction} from 'express';
 import Meter from '../models/meter';
-import {MetersResponse} from '../types/MetersResponse'
-import { MetersWithinRangeParams } from '../types/MetersWithinRangeParams';
+import {MetersResponse} from '../common/types/api/MetersResponse'
+import { MetersWithinRangeParams } from '../common/types/api/MetersWithinRangeParams';
 import { Point } from '../models/geo';
 import cluster from '../models/cluster';
-import { MeterGroupsResponse } from '../types/MeterGroupsResponse';
+import { MeterGroupsResponse } from '../common/types/api/MeterGroupsResponse';
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/";
 import { HttpException } from "../exceptions/HttpException";
 import { ModelNotFoundException } from '../exceptions/ModelNotFoundException';

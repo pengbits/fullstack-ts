@@ -2,7 +2,7 @@ import { expectAttributes } from "../.jest/testUtils"
 import ParkingSession from "./parking-session"
 import { costForDuration } from "../utils/meters"
 import { newDate, toTimestamp } from "../utils/date"
-import CreateParkingSessionParams from "../types/CreateParkingSessionParams"
+import {CreateParkingSessionParams} from "../common/types/api/CreateParkingSessionParams"
 
 describe('ParkingSession', () => {
   describe('current()', () => {

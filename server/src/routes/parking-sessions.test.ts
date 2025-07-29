@@ -2,7 +2,7 @@ import request from "supertest"
 import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
 import ParkingSession from "../models/parking-session"
-import ParkingSessionAttributes from "../types/ParkingSessionAttributes"
+import {ParkingSessionAttributes} from "../common/types/api/ParkingSessionAttributes"
 import { toDate, toTimestamp, newDate, getDuration } from "../utils/date"
 import { costForDuration } from "../utils/meters"
 
