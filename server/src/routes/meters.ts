@@ -41,7 +41,9 @@ router.get('/:lat,:lon/:radius/:num_groups', async (req:Request<MetersWithinRang
         lon:c.lon,
         count:clusters.clusters[i].points.length
       }
-    }).filter(group => group.count > 0)
+    })
+    //.filter(group => group.count > 0) 
+    // ^ filtering out empties results in less than the requested groups, causing tests to fail
     
     res.status(200).json({meter_groups})
   } catch(e:unknown){
