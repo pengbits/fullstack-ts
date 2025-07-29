@@ -1,6 +1,6 @@
 import './MarkerDetails.css'
 import { Link } from 'react-router'
-import type {MeterAttributes}  from '@/types/api/MeterAttributes'
+import type {MeterAttributes}  from '@/common/types/api/MeterAttributes'
 
 interface MarkerDetailsProps {
   onClose: Function,

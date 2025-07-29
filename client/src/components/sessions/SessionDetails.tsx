@@ -1,4 +1,4 @@
-import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
+import type {ParkingSessionAttributes} from "@/common/types/api/ParkingSessionAttributes"
 import { Link } from "react-router"
 import { prettyPrice } from "@/util/string"
 import CountDownWidget from "./CountDownWidget"

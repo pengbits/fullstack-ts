@@ -1,9 +1,9 @@
 import Marker from "./Marker"
 import MarkerGroup from '@/components/markers/MarkerGroup'
-import type { MetersResponse } from "@/types/api/MetersResponse"
-import type { MeterAttributes } from '@/types/api/MeterAttributes';
-import type { MeterGroupsResponse } from "@/types/api/MeterGroupsResponse";
-import type { MeterGroupAttributes } from "@/types/api/MeterGroupAttributes";
+import type { MetersResponse } from "@/common/types/api/MetersResponse"
+import type { MeterAttributes } from '@/common/types/api/MeterAttributes';
+import type { MeterGroupsResponse } from "@/common/types/api/MeterGroupsResponse";
+import type { MeterGroupAttributes } from "@/common/types/api/MeterGroupAttributes";
 
 interface MarkerCollectionProps {
   data:MetersResponse | MeterGroupsResponse

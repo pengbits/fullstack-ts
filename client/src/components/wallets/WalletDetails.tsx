@@ -8,6 +8,7 @@ export const WalletDetails = () => {
     isError,
     data
   } = useFetch('/api/wallets')
+  
   const price = data && data.wallets && data.wallets.length === 1 ? 
     prettyPrice(data.wallets[0].balance) : ''
   ;

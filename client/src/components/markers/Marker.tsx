@@ -1,6 +1,6 @@
 import {AdvancedMarker} from '@vis.gl/react-google-maps';
 import MarkerPin from './MarkerPin';
-import type MeterAttributes from '@/types/api/MeterAttributes';
+import type {MeterAttributes} from '@/common/types/api/MeterAttributes';
 import './marker.css'
 
 interface MarkerProps extends MeterAttributes  {

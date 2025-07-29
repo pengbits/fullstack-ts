@@ -1,4 +1,4 @@
-import type ParkingSessionAttributes from "@/types/api/ParkingSessionAttributes"
+import type {ParkingSessionAttributes} from "@/common/types/api/ParkingSessionAttributes"
 import SessionListItem from "./SessionListItem"
 import "./SessionList.css"
 

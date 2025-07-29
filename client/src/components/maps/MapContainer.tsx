@@ -8,7 +8,7 @@ import useFetch from '@/hooks/useFetch';
 
 
 import type {Bounds} from '@/types/geo/bounds'
-import type MeterAttributes from '@/types/api/MeterAttributes';
+import type {MeterAttributes} from '@/common/types/api/MeterAttributes'
 import { getDimensionsFromBounds, getSearchRadiusFromDimensions } from '@/util/geo';
 
 
