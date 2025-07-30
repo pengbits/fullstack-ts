@@ -1,9 +1,39 @@
 import pool from "../../db/pool";
-import { QueryResultRow } from "pg";
 import {VehicleAttributes} from "../../common/types/api/VehicleAttributes"
+import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException";
 
+export class Vehicle {
+  id: string
+  name: string
+  is_default: boolean
 
-class Vehicle {
+  constructor(attrs:VehicleAttributes) {
+    this.id = attrs.id
+    this.name = attrs.name
+    this.is_default = attrs.is_default
+  }
+
+  async save(){
+    try {
+      const sql = `UPDATE vehicles SET name=$1, is_default=$2 WHERE id=$3`
+      console.log(sql, [this.name, this.is_default, this.id])
+      const res = await pool.query(sql, [this.name, this.is_default, this.id])
+      return this.serialize()
+    }
+    catch(e){
+      console.log(e)
+      throw(e)
+    }
+  }
+
+  serialize ():VehicleAttributes {
+    return {
+      name: this.name,
+      id: this.id,
+      is_default: this.is_default
+    }
+  }
+
   static async deleteAll() {
     const sql = `DELETE FROM vehicles`
     const res = await pool.query(sql)
@@ -16,21 +46,30 @@ class Vehicle {
     const res = await pool.query(sql)
     return res.rows
   }
+  
+  static async findById(id:string):Promise<Vehicle> {
+    const sql = `SELECT * FROM vehicles WHERE id=$1 LIMIT 1;`
+    console.log(sql, [id])
+    const res = await pool.query(sql, [id])
 
-  static async create({name,id,is_default}:VehicleAttributes) {
-    const sql = `INSERT INTO vehicles (name,id,is_default) VALUES($1,$2,$3)
-                 RETURNING name, id, is_default`
-    console.log(sql, [name,id,is_default])
-    const res = await pool.query(sql, [name,id,is_default])
-    const row = res.rows[0]
-    return this.serializeRow(row)
+    if(res.rows.length > 1){
+      throw new Error(`expected 0-1 rows for vehicle::findById(${id})`)
+    }
+    return new Vehicle(res.rows[0])
   }
 
-  static serializeRow = (row:QueryResultRow):VehicleAttributes => {
-    return {
-      name: row.name,
-      id: row.id,
-      is_default: row.is_default
+  static async create({name,id,is_default}:VehicleAttributes) {
+    try {
+      const sql = `INSERT INTO vehicles (name,id,is_default) VALUES($1,$2,$3)
+                 RETURNING name, id, is_default`
+      console.log(sql, [name,id,is_default])
+      const res = await pool.query(sql, [name,id,is_default])
+      return res.rows[0]
+    } catch(e:any){
+      if(e.message.indexOf('duplicate key value') == 0){
+        throw new InvalidAttrsException('Vehicle','id must be a unique value')
+      }
+      throw(e)
     }
   }
 }

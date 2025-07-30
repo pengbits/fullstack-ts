@@ -1,7 +1,8 @@
 import request from "supertest"
 import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
-
+import Vehicle
+ from "../models/vehicle"
 describe('vehicles', () => {
   describe('GET /api/vehicles', () => {
     it('returns the list of vehicles', async () => {
@@ -15,8 +16,10 @@ describe('vehicles', () => {
     })
   })
 
+
   describe('POST /api/vehicles', () => {
     it('creates a new vehicle and saves it to the db', async () => {
+      await Vehicle.deleteAll()
       const res = await request(app).post('/api/vehicles')
         .send({
           'name': 'saulmobile',
@@ -33,6 +36,41 @@ describe('vehicles', () => {
           'is_default':false
         }
       })
+    })
+
+    it('ids must be unique', async () => {
+      await Vehicle.deleteAll()
+      const one = await request(app).post('/api/vehicles')
+        .send({
+          'name': 'kendrickmobile',
+          'id': 'GNX24',
+          'is_default':false
+        })
+      const two= await request(app).post('/api/vehicles')
+        .send({
+          'name': 'kendrickmobile',
+          'id': 'GNX24',
+          'is_default':false
+        })
+      expect(two.status).toBe(400)
+      expect(two.body.success).toBe(false)
+    })
+  })
+
+  describe('PUT /api/vehicle/:id', () => {
+    it('updates the vehicle for the specified id', async () => {
+      await Vehicle.create({
+        'name': 'saulmobile',
+        'id': 'LWYRUP',
+        'is_default':false
+      })
+      const res = await request(app).put('/api/vehicles/LWYRUP')
+        .send({
+          'name':'some beater',
+          'is_default':true
+        })
+      expect(res.status).toBe(200) 
+      expect(res.body.vehicle.name).toBe('some beater')
     })
   })
 })

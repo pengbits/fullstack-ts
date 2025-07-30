@@ -20,5 +20,6 @@ export const enum HttpStatusCode {
 export const APP_ERROR_MESSAGE = {
   serverError: "Something went wrong, try again later",
   invalidMeterNumber: "Invalid Meter Number",
-  meterDoesntExist: "Meter does not exist"
+  meterDoesntExist: "Meter does not exist",
+  vehicleDoesntExist: "Vehicle does not exist"
 };
