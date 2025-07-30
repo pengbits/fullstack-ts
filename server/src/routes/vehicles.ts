@@ -57,7 +57,6 @@ router.put('/:id', async (req:Request, res:Response, next:NextFunction) => {
   }
   catch(e){
     if(e instanceof ModelNotFoundException){
-      console.log('model not found!')
       next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.vehicleDoesntExist))
     }
     next(e)

@@ -54,6 +54,7 @@ describe('vehicles', () => {
         })
       expect(two.status).toBe(400)
       expect(two.body.success).toBe(false)
+      expect(two.body.error).toEqual('could not create Vehicle: id must be a unique value')
     })
   })
 
