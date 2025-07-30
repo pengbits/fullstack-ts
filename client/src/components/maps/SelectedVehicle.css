@@ -1,0 +1,52 @@
+.selected-vehicle {
+  display: flex;
+  align-items: center;
+  border: #000 solid 1px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  padding: 10px;
+  top: 10px;
+  background-color: rgba(255,255,255, 0.75);  
+  text-decoration: none;
+  color: #000;
+}
+.selected-vehicle:hover {
+  text-decoration: underline;
+}
+
+.selected-vehicle .footer,
+.selected-vehicle .header {
+  flex-basis: 50%;
+}
+
+.selected-vehicle .footer {
+  text-align: right;
+}
+.selected-vehicle .edit-vehicle {
+  line-height: 16px;
+}
+
+.selected-vehicle .edit-vehicle:after {
+  position: relative;
+  top:3px;
+  margin-left: 3px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  content: "";
+  background: transparent no-repeat url(/icons/disclosure.svg) center center;
+}
+.selected-vehicle h4,
+.selected-vehicle p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media screen and (min-width:480px) {
+  .selected-vehicle {
+    padding: 15px;
+    left: 25%;
+    right: 25%;
+  }
+}

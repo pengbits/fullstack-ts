@@ -11,7 +11,7 @@ export const Nav = () => (
       <i className="icon sessions"></i>
       My Sessions
     </Link>
-    <Link className="account" to="/account">
+    <Link className="account" to="/account/payment-details">
       <i className="icon account"></i>
       My Account
     </Link>
