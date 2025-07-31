@@ -14,16 +14,17 @@ export class Vehicle {
   }
 
   async save(){
-    try {
-      const sql = `UPDATE vehicles SET name=$1, is_default=$2 WHERE id=$3`
-      console.log(sql, [this.name, this.is_default, this.id])
-      const res = await pool.query(sql, [this.name, this.is_default, this.id])
-      return this.serialize()
-    }
-    catch(e){
-      console.log(e)
-      throw(e)
-    }
+    const sql = `UPDATE vehicles SET name=$1, is_default=$2 WHERE id=$3`
+    console.log(sql, [this.name, this.is_default, this.id])
+    const res = await pool.query(sql, [this.name, this.is_default, this.id])
+    return this.serialize()
+  }
+
+  async delete(){
+    const sql = `DELETE FROM vehicles WHERE id=$1`;
+    console.log(sql, [this.id])
+    const res = await pool.query(sql, [this.id])
+    return res
   }
 
   serialize ():VehicleAttributes {

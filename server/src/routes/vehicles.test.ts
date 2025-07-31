@@ -58,7 +58,7 @@ describe('vehicles', () => {
     })
   })
 
-  describe('PUT /api/vehicle/:id', () => {
+  describe('PUT /api/vehicles/:id', () => {
     it('updates the vehicle for the specified id', async () => {
       await Vehicle.create({
         'name': 'saulmobile',
@@ -72,6 +72,23 @@ describe('vehicles', () => {
         })
       expect(res.status).toBe(200) 
       expect(res.body.vehicle.name).toBe('some beater')
+    })
+  })
+
+  describe('DELETE /api/vehicles/:id', () => {
+    it('removes the vehicle from the db', async () => {
+      await Vehicle.deleteAll()
+      await Vehicle.create({
+        'name': 'tempcar',
+        'id': 'JSX-1851',
+        'is_default':false
+      }) 
+      const res = await request(app)
+        .delete('/api/vehicles/JSX-1851')
+
+      expect(res.status).toBe(200)
+      expect(res.body.success).toBe(true) 
+      expect(res.body.vehicle.id).toBe('JSX-1851')
     })
   })
 })

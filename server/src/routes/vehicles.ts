@@ -63,5 +63,23 @@ router.put('/:id', async (req:Request, res:Response, next:NextFunction) => {
   }
 })
 
+router.delete('/:id', async (req:Request, res:Response, next:NextFunction) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id)
+    await vehicle.delete()
+    
+    res.status(200).json({
+      success:true,
+      vehicle
+    })
+  } 
+  catch(e){
+    if(e instanceof ModelNotFoundException){
+      next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.vehicleDoesntExist))
+    }
+    next(e)
+  }
+})
+    
 
 export default router
