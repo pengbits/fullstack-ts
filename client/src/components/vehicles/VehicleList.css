@@ -15,3 +15,6 @@
 .vehicle-list li:hover {
   background-color: #CCC;
 }
+.vehicle-list li.selected {
+  font-weight: bold;
+}
