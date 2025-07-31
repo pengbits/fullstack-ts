@@ -1,4 +1,4 @@
-.selected-vehicle {
+.vehicle-info {
   display: flex;
   align-items: center;
   border: #000 solid 1px;
@@ -11,23 +11,23 @@
   text-decoration: none;
   color: #000;
 }
-.selected-vehicle:hover {
+.vehicle-info:hover {
   text-decoration: underline;
 }
 
-.selected-vehicle .footer,
-.selected-vehicle .header {
+.vehicle-info .footer,
+.vehicle-info .header {
   flex-basis: 50%;
 }
 
-.selected-vehicle .footer {
+.vehicle-info .footer {
   text-align: right;
 }
-.selected-vehicle .edit-vehicle {
+.vehicle-info .edit-vehicle {
   line-height: 16px;
 }
 
-.selected-vehicle .edit-vehicle:after {
+.vehicle-info .edit-vehicle:after {
   position: relative;
   top:3px;
   margin-left: 3px;
@@ -37,14 +37,14 @@
   content: "";
   background: transparent no-repeat url(/icons/disclosure.svg) center center;
 }
-.selected-vehicle h4,
-.selected-vehicle p {
+.vehicle-info h4,
+.vehicle-info p {
   margin: 0;
   font-size: 14px;
 }
 
 @media screen and (min-width:480px) {
-  .selected-vehicle {
+  .vehicle-info {
     padding: 15px;
     left: 25%;
     right: 25%;

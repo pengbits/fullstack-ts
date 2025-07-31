@@ -1,6 +1,7 @@
 import pool from "../../db/pool";
 import {VehicleAttributes} from "../../common/types/api/VehicleAttributes"
 import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException";
+import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException";
 
 export class Vehicle {
   id: string
@@ -55,6 +56,9 @@ export class Vehicle {
 
     if(res.rows.length > 1){
       throw new Error(`expected 0-1 rows for vehicle::findById(${id})`)
+    }
+    if(res.rows.length == 0){
+      throw new ModelNotFoundException('Vehicle', {id})
     }
     return new Vehicle(res.rows[0])
   }

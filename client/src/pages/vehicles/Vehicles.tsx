@@ -1,9 +1,9 @@
+import { Link } from "react-router"
+import { VehicleList } from "@/components/vehicles/VehicleList"
 export default () => (
   <div className="vehicles">
     <h3>Choose a Vehicle:</h3>
-    <ul className="vehicles-list">
-      <li>JNT-1095</li>
-      <li>LWYRUP</li>
-    </ul>
+    <VehicleList />
+    <Link to='/vehicles/new'>Add a Vehicle</Link>
   </div>
 )

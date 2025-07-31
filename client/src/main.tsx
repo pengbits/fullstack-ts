@@ -11,7 +11,8 @@ import ActiveSessionPage  from './pages/sessions/ActiveSession'
 import PastSessionsPage from './pages/sessions/PastSessions.tsx';
 import PaymentDetailsPage from './pages/account/PaymentDetailsPage.tsx';
 import VehiclesPage  from './pages/vehicles/Vehicles.tsx';
-
+import NewVehiclePage from './pages/vehicles/NewVehicle.tsx';
+import EditVehiclePage from './pages/vehicles/EditVehicle.tsx';
 const router = createBrowserRouter([
   {
     Component: App,
@@ -39,6 +40,12 @@ const router = createBrowserRouter([
     },{
       path:'/vehicles',
       Component: VehiclesPage
+    },{
+      path:'/vehicles/new',
+      Component: NewVehiclePage
+    },{
+      path:'/vehicles/:id/edit',
+      Component: EditVehiclePage
     }]
   }
 ])

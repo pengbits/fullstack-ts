@@ -18,6 +18,22 @@ router.get('/', async (req:Request, res:Response, next:NextFunction) => {
   }
 })
 
+router.get('/:id', async (req:Request, res:Response, next:NextFunction) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id)    
+    res.status(200).json({
+      vehicle
+    })
+  }
+  catch(e){
+    if(e instanceof ModelNotFoundException){
+      console.log('not found')
+      next(new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.vehicleDoesntExist))
+    }
+    next(e)
+  }
+})
+
 router.post('/', async (req:Request, res:Response, next:NextFunction) => {
   try {
     const vehicle = await Vehicle.create(req.body)

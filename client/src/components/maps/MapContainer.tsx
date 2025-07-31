@@ -16,7 +16,7 @@ import type {MarkerGroupLocation} from '@/components/markers/MarkerGroup';
 import MarkerCollection from '@/components/markers/MarkerCollection'
 import MarkerDetails from '@/components/markers/MarkerDetails'
 import SearchBox from '@/components/maps/SearchBox'
-import SelectedVehicle  from './SelectedVehicle';
+import VehicleInfo  from '@/components/vehicles/VehicleInfo';
 import './MapContainer.css'
 
 export interface MapContainerProps {
@@ -107,7 +107,7 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
         activeMeter={activeMeter}
       />
     </Map>
-    <SelectedVehicle />
+    <VehicleInfo />
     {!!activeMeter && <MarkerDetails
       meter={activeMeter}
       onClose={e => setActiveMeter(null)} />}
