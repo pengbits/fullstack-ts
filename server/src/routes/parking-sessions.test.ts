@@ -2,12 +2,15 @@ import request from "supertest"
 import {expectAttributes} from '../.jest/testUtils'
 import app from "../app"
 import ParkingSession from "../models/parking-session"
+import Vehicle from "../models/vehicle"
 import {ParkingSessionAttributes} from "../common/types/api/ParkingSessionAttributes"
 import { toDate, toTimestamp, newDate, getDuration } from "../utils/date"
 import { costForDuration } from "../utils/meters"
 
 beforeAll(async () => {
   await ParkingSession.deleteAll()
+  await Vehicle.deleteAll()
+  await Vehicle.create({name:'saulmobile',id:'LWYRUP','is_default':false})    
 })
 
 
@@ -25,18 +28,21 @@ describe('parking-sessions', () => {
 
   describe('GET /api/parking-sessions', () => {
     it('returns an array of parking sessions sorted in reverse chron order', async () => {
-      const session_attrs = [{
+     const session_attrs = [{
         meter_number: '3163005',
         start_time: toTimestamp(newDate().subtract(1, 'hours')),
-        duration: 30
+        duration: 30,
+        vehicle_id: 'LWYRUP'
       },{
         meter_number: '3163006',
         start_time: toTimestamp(newDate().subtract(2, 'hours')),
-        duration: 60
+        duration: 60,
+        vehicle_id: 'LWYRUP'
       },{
         meter_number: '3163007',
         start_time: toTimestamp(newDate().subtract(3, 'hours')),
-        duration: 10
+        duration: 10,
+        vehicle_id: 'LWYRUP'
       }]
 
       // this results in multiple active sessions, do not attempt!
@@ -54,7 +60,7 @@ describe('parking-sessions', () => {
       const {sessions} = response.body
       expect(sessions.length).toBe(3)
       expect(sessions.filter((s:ParkingSessionAttributes) => !!s.active)).toHaveLength(1)
-      expectAttributes(sessions[0], ["meter", "active", "ends", "started", "id", "cost"])
+      expectAttributes(sessions[0], ["meter", "active", "ends", "started", "id", "cost", "vehicle"])
       expect(sessions[0].cost).toBeTruthy()
       expect(sessions[0].meter).toEqual(expect.objectContaining({
         on_street:expect.any(String),
@@ -70,11 +76,12 @@ describe('parking-sessions', () => {
           'meter_number': '3163005',
           'start_time': toTimestamp(newDate()),
           'duration': 20,
+          'vehicle_id':'LWYRUP'
         })
         .set('Accept', 'application/json')
       expect(response.status).toBe(201)
       expectAttributes(response.body.parking_session, [
-        'id','started','ends','active','meter'
+        'id','started','ends','active','meter','vehicle'
       ])
       expectAttributes(response.body.parking_session.meter, [
         'meter_number',   //: '3163005',
@@ -82,6 +89,11 @@ describe('parking-sessions', () => {
         'on_street',      //: 'NOSTRAND AVENUE',
         'lat',            //: 40.6558028823484,
         'long'            //: -73.950029350261
+      ])
+      expectAttributes(response.body.parking_session.vehicle, [
+        'id',
+        'name',
+        'is_default'
       ])
     })
 
@@ -100,6 +112,12 @@ describe('parking-sessions', () => {
 
   describe('GET /api/parking-session', () => {
     it('returns data about the current parking session', async () => {
+      await ParkingSession.create({
+        meter_number: '3043096',
+        start_time: toTimestamp(newDate()),
+        duration: 20,
+        vehicle_id:'LWYRUP'
+      })
       const response = await request(app).get('/api/parking-session')
 
       expect(response.status).toBe(200)

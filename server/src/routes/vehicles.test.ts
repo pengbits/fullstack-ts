@@ -6,6 +6,12 @@ import Vehicle
 describe('vehicles', () => {
   describe('GET /api/vehicles', () => {
     it('returns the list of vehicles', async () => {
+      await Vehicle.deleteAll()
+      await Vehicle.create({
+        name: 'saulmobile',
+        id: 'LWYRUP',
+        is_default:false
+      })
       const res = await request(app).get('/api/vehicles')
       expect(res.status).toBe(200)
       expect(res.body.vehicles).toEqual(expect.arrayContaining([{
@@ -13,6 +19,24 @@ describe('vehicles', () => {
         id: expect.any(String),
         is_default:expect.any(Boolean)
       }]))
+    })
+  })
+
+  describe('GET /api/vehicles/:id', () => {
+    it('returns the vehicle for the specified id', async () => {
+      await Vehicle.deleteAll()
+      await Vehicle.create({
+        name: 'My Honda',
+        id: 'JNT-1000',
+        is_default:true
+      })
+      const res = await request(app).get('/api/vehicles/JNT-1000')
+      expect(res.status).toBe(200)
+      expect(res.body.vehicle).toEqual({
+        name: 'My Honda',
+        id: 'JNT-1000',
+        is_default:true
+      })
     })
   })
 

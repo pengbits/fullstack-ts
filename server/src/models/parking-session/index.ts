@@ -3,6 +3,7 @@ import pool from "../../db/pool"
 import {ParkingSessionAttributes} from "../../common/types/api/ParkingSessionAttributes"
 import {CreateParkingSessionParams} from "../../common/types/api/CreateParkingSessionParams"
 import Meter from "../meter"
+import Vehicle from "../vehicle"
 import { InvalidAttrsException } from "../../exceptions/InvalidAttrsException"
 import { ModelNotFoundException } from "../../exceptions/ModelNotFoundException"
 import { getDuration, toDate, toTimestamp } from "../../utils/date"
@@ -11,10 +12,14 @@ import Wallet from "../wallet"
 
 class ParkingSession {
   static async current () {
-    const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
-    FROM parking_sessions AS s
-    JOIN meters AS m ON s.meter_number=m.meter_number
-    WHERE s.active=true AND s.ends >= NOW()`
+    const sql = `SELECT m.meter_number as meter_number, 
+    m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, 
+    v.id as vehicle_id, v.name as vehicle_name, v.is_default as vehicle_is_default,
+    s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
+  FROM parking_sessions AS s
+  JOIN meters AS m ON s.meter_number=m.meter_number
+  JOIN vehicles AS v ON s.vehicle_id=v.id
+  WHERE s.active=true AND s.ends >= NOW()`
     console.log(sql)
     try {
       const res = await pool.query(sql)
@@ -32,6 +37,7 @@ class ParkingSession {
       return this.getSessionAttributesFromRow(res.rows[0])
     }
     catch(e:any){
+      console.log(e)
       throw e
     }
   }
@@ -44,6 +50,9 @@ class ParkingSession {
       lat,
       long,
       cost,
+      vehicle_id,
+      vehicle_name,
+      vehicle_is_default,
       ...session
     } = row
     return {
@@ -56,19 +65,28 @@ class ParkingSession {
         on_street,
         lat,
         long
+      },
+      vehicle:{
+        id:vehicle_id,
+        name:vehicle_name,
+        is_default:vehicle_is_default,
       }
     }
   }
 
   static async create(attrs:CreateParkingSessionParams): Promise<ParkingSessionAttributes> {
     // TODO validate elsewhere
-    if(!attrs.meter_number) throw new InvalidAttrsException('Meter','Meter number is required')
-    if(!attrs.start_time)   throw new InvalidAttrsException('Meter','Start time is required')
-    if(!attrs.duration)     throw new InvalidAttrsException('Meter','Duration is required')
+    if(!attrs.meter_number) throw new InvalidAttrsException('ParkingSession','Meter number is required')
+    if(!attrs.start_time)   throw new InvalidAttrsException('ParkingSession','Start time is required')
+    if(!attrs.duration)     throw new InvalidAttrsException('ParkingSession','Duration is required')
+    if(!attrs.vehicle_id)     throw new InvalidAttrsException('ParkingSession','Vehicle ID is required')
     
     try {
       const meter = await Meter.find(attrs.meter_number)
-      if(!meter) throw new ModelNotFoundException('meter', attrs)
+      if(!meter) throw new ModelNotFoundException('meter', {meter_number:attrs.meter_number})
+      
+      const vehicle = await Vehicle.findById(attrs.vehicle_id)
+      if(!vehicle) throw new ModelNotFoundException('vehicle', {vehicle_id:attrs.vehicle_id})
       await this.unsetActive()
       
       const start = toDate(attrs.start_time)
@@ -80,10 +98,10 @@ class ParkingSession {
       await wallet.save()
       
       const sql = `
-      INSERT INTO parking_sessions (meter_number, started, ends, active, cost)
-      VALUES ($1,$2,$3,$4,$5) RETURNING id, meter_number, started::text, ends::text, active, cost`
-      console.log(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true])
-      const res =await pool.query(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true, cost])    
+      INSERT INTO parking_sessions (meter_number, started, ends, active, cost, vehicle_id)
+      VALUES ($1,$2,$3,$4,$5,$6) RETURNING id, meter_number, started::text, ends::text, active, cost`
+      console.log(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true, vehicle.id])
+      const res =await pool.query(sql, [meter.meter_number, toTimestamp(start), toTimestamp(end), true, cost, vehicle.id])    
 
       if(res.rows.length !== 1) throw new Error('expected 1 row after succesful ParkingSession::create, found:'+res.rows.length)
       const session = res.rows[0]
@@ -94,10 +112,12 @@ class ParkingSession {
         ends: session.ends,
         active: session.active,
         cost,
-        meter
+        meter,
+        vehicle: vehicle.serialize()
       })
     }
     catch (e:any){
+      console.log(e)
       throw e
     }
     
@@ -153,9 +173,12 @@ class ParkingSession {
   }
 
   static async find () {
-    const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost
+    const sql = `SELECT m.meter_number as meter_number, m.side_of_street as side_of_street, m.on_street as on_street, m.lat as lat, m.long as long, 
+    s.started as started, s.ends as ends, s.id as id, s.active as active, s.cost as cost,
+    v.id as vehicle_id, v.name as vehicle_name, v.is_default as vehicle_is_default
     FROM parking_sessions AS s
-    JOIN meters AS m ON s.meter_number=m.meter_number`
+    JOIN meters AS m ON s.meter_number=m.meter_number
+    JOIN vehicles AS v ON s.vehicle_id=v.id`
     console.log(sql)
     const res = await pool.query(sql)
     return res.rows.map(r => this.getSessionAttributesFromRow(r))
