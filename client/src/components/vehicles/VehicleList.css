@@ -1,0 +1,17 @@
+.vehicle-list {
+  max-width: 400px;
+  margin: 0 0 15px 15px;
+  padding: 0;
+  border-bottom: #ccc solid 1px;
+
+}
+.vehicle-list li {
+  list-style: none;
+  padding: 10px 15px;
+  border: #ccc solid 1px;
+  border-bottom: 0;
+  cursor: pointer;
+}
+.vehicle-list li:hover {
+  background-color: #CCC;
+}

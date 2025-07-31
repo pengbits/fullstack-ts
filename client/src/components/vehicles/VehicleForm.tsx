@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import type { VehicleAttributes } from "@/common/types/api/VehicleAttributes"
 
 const defaultState:VehicleAttributes = {
@@ -8,12 +9,40 @@ const defaultState:VehicleAttributes = {
 }
 export const VehicleForm = ({isEditing, ...props}) => {
   const intitialState = Object.keys(props).length ? props : defaultState
+  const [isCreating,setIsCreating] = useState(false)
+  const [isError,setIsError] = useState(false)
+  const [error,setError] = useState('')
+  const [isSubmitting,setIsSubmitting ]= useState(false)
   const [attrs, setAttrs] = useState<VehicleAttributes>(intitialState)
+  const navigate = useNavigate()
+  const createVehicle = async () => {
+    // const url = isEditing ? `/api/vehicles/${attrs.id}` : `/api/vehicles`  
+    try {
+      setIsSubmitting(true)
+      setIsCreating(true)
+      const res = await fetch('/api/vehicles', {
+        method:'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(attrs)
+      })
+      const json = await res.json()
+      if(res.status == 400) throw new Error(json.error)
+      // redirect to /vehicles?
+      setError('')
+      setIsError(false)
+      navigate('/vehicles')
+    } catch(e){
+      setIsError(true)
+      setError(e.message)
+      console.log(e)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const url = isEditing ? `/api/vehicles/${attrs.id}` : `/api/vehicles`  
-    console.log(url, attrs)
+    createVehicle()
   }
 
   const handleChange = (e) => {
@@ -23,8 +52,14 @@ export const VehicleForm = ({isEditing, ...props}) => {
       [id] : value
     }))
   }
+  
+  if(isCreating && !isSubmitting && !isError){
+      return <p style={{color:'green'}}>Success!</p>
+  }
 
-  return <form action="#" onSubmit={handleSubmit}>
+  return <>
+    {isError && <p style={{color:'red'}}>{error}</p>}
+    <form action="#" onSubmit={handleSubmit}>
     <p>
       <b>License Plate</b><br />
       <input id="id" type="text" onChange={handleChange}
@@ -45,6 +80,7 @@ export const VehicleForm = ({isEditing, ...props}) => {
         checked={attrs.is_default} 
       />
     </p>
-    <input type="submit"/>    
+    <input type="submit" disabled={isSubmitting} />    
   </form>
+  </>
 }
