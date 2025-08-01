@@ -1,10 +1,15 @@
 import { createContext, useContext, useState } from "react";
-import type { PropsWithChildren } from "react";
+import type { Dispatch, PropsWithChildren } from "react";
 
-const SelectedVehicleContext = createContext({})
+interface SelectedVehicleContextValue {
+  selectedVehicle:string,
+  setSelectedVehicle:Dispatch<React.SetStateAction<string>>
+}
+const SelectedVehicleContext = createContext({} as SelectedVehicleContextValue)
 
+const DEFAULT_VEHICLE = 'DEFAULT_VEHICLE'
 const Provider = ({children}:PropsWithChildren) => {
-  const [selectedVehicle,setSelectedVehicle] = useState('LWYRUP')
+  const [selectedVehicle,setSelectedVehicle] = useState(DEFAULT_VEHICLE)
   return <SelectedVehicleContext value={{selectedVehicle,setSelectedVehicle}}>
     {children}
   </SelectedVehicleContext>
@@ -22,5 +27,6 @@ const useContext_ = () => {
 export {
   SelectedVehicleContext, 
   useContext_ as useContext,
-  Provider
+  Provider,
+  DEFAULT_VEHICLE
 }

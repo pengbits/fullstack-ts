@@ -20,10 +20,10 @@ export const VehicleList = () => {
 
   if(isSuccess && data?.vehicles?.length){
     return (<ul className="vehicle-list">
-      {data.vehicles.map(({id,name}:VehicleAttributes) => (
+      {data.vehicles.map(({id,name,is_default}:VehicleAttributes) => (
         <li key={id} className={id === selectedVehicle ? 'selected' : ''} 
           onClick={e => handleClick(id)}>
-          {name}{' '}{id}{' '}{id === selectedVehicle ? '√':''}
+          {name}{' '}{id}{is_default && <em className="is-default">★</em>}
         </li>))}
     </ul>)
   }
