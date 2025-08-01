@@ -7,15 +7,14 @@ interface SelectedVehicleContextValue {
 }
 const SelectedVehicleContext = createContext({} as SelectedVehicleContextValue)
 
-const DEFAULT_VEHICLE = 'DEFAULT_VEHICLE'
 const Provider = ({children}:PropsWithChildren) => {
-  const [selectedVehicle,setSelectedVehicle] = useState(DEFAULT_VEHICLE)
+  const [selectedVehicle,setSelectedVehicle] = useState('')
   return <SelectedVehicleContext value={{selectedVehicle,setSelectedVehicle}}>
     {children}
   </SelectedVehicleContext>
 }
 
-const useContext_ = () => {
+const useSelectedVehicleContext = () => {
   const context = useContext(SelectedVehicleContext)
 
   if(Object.keys(context).length === 0){
@@ -26,7 +25,6 @@ const useContext_ = () => {
 
 export {
   SelectedVehicleContext, 
-  useContext_ as useContext,
+  useSelectedVehicleContext,
   Provider,
-  DEFAULT_VEHICLE
 }

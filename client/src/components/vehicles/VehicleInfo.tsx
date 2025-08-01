@@ -1,7 +1,7 @@
 import useFetch from '@/hooks/useFetch'
 import type { VehicleAttributes } from '@/common/types/api/VehicleAttributes'
 import { VehicleSummary } from './VehicleSummary'
-import { useContext } from '@/contexts/SelectedVehicleContext'
+import { useSelectedVehicleContext } from '@/contexts/SelectedVehicleContext'
 import './VehicleInfo.css'
 export const VehicleInfo = () => {
   const {
@@ -11,7 +11,7 @@ export const VehicleInfo = () => {
     isLoading
   } = useFetch('/api/vehicles')
 
-  const {selectedVehicle} = useContext()
+  const {selectedVehicle} = useSelectedVehicleContext()
 
   if(isLoading) {
     return (<div className='vehicle-info loading'>

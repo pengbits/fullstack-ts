@@ -1,13 +1,13 @@
 import type { VehicleAttributes } from "@/common/types/api/VehicleAttributes"
 import useFetch from "@/hooks/useFetch"
 import './VehicleList.css'
-import { useContext } from "@/contexts/SelectedVehicleContext"
+import { useSelectedVehicleContext } from "@/contexts/SelectedVehicleContext"
 export const VehicleList = () => {
   const {data,isLoading,isSuccess} = useFetch('/api/vehicles')
   const {
     selectedVehicle,
     setSelectedVehicle
-  } = useContext()  
+  } = useSelectedVehicleContext()  
  
   const handleClick = (id) => {
     console.log('set active vehicle to '+id)
