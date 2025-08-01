@@ -1,5 +1,6 @@
 import { Link } from "react-router"
 import "./Nav.css"
+
 export const Nav = () => (
 <footer className="nav-container">
   <nav className="nav">
