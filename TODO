@@ -1,4 +1,4 @@
-- add tests for GET vehicle endpoint
+- memoize/callbackify searchbox and vehicleInfo - they're rendering with every map event
 - move license plate to its own field and use regular serial int for id in vehicles
 - cleanup or decouple vehicle edit/new form 
--  resolve confusion re meter_number vs pay_by_cell_number: the meter number has 7 digits, the pay_by_cell has 6, but pbc is what's printed on the meters and is how we think of the object's primary key... in the code we're using meter_number every where
+- resolve confusion re meter_number vs pay_by_cell_number: the meter number has 7 digits, the pay_by_cell has 6, but pbc is what's printed on the meters and is how we think of the object's primary key... in the code we're using meter_number every where

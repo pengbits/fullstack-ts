@@ -43,7 +43,6 @@ const MapContainer = ({lat,lon,defaultZoom,mapId}:MapContainerProps) => {
 
   const {
     cameraProps,
-    setCameraProps,
     animateCamera,
     onCameraChanged
   } = useMapCamera({

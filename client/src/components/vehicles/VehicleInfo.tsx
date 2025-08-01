@@ -12,7 +12,7 @@ export const VehicleInfo = () => {
   } = useFetch('/api/vehicles')
 
   const {selectedVehicle} = useSelectedVehicleContext()
-
+  console.log('VehicleInfo#render')
   if(isLoading) {
     return (<div className='vehicle-info loading'>
     <p>loading..</p>

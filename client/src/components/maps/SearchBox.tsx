@@ -47,7 +47,7 @@ export const SearchBox = ({onSelectMeter}:SearchBoxProps) => {
     setIsFetching(false)
   }
 
-
+  console.log('Searchbox#render')
   if(!isFetching && !isLoading) return (
   <form className="searchbox">
     <input type="text" 

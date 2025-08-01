@@ -8,7 +8,7 @@ import type { MeterGroupAttributes } from "@/common/types/api/MeterGroupAttribut
 interface MarkerCollectionProps {
   data:MetersResponse | MeterGroupsResponse
   zoom:number,
-  activeMeter:MeterAttributes,
+  activeMeter:MeterAttributes | null,
   handleGroupClick:Function,
   handleClick:Function
 }
@@ -29,7 +29,6 @@ const MarkerCollection = ({data,activeMeter,handleGroupClick,handleClick}:Marker
 }
 
 const renderMarkerGroups = (meter_groups:Array<MeterGroupAttributes>, handleGroupClick:Function) => (meter_groups.map(({lat,lon,count}) => {
-  // TODO return a marker if the group count is 1
   return <MarkerGroup
     key={`${lat},${lon},${count}`}
     lat={lat}
@@ -39,10 +38,10 @@ const renderMarkerGroups = (meter_groups:Array<MeterGroupAttributes>, handleGrou
   ></MarkerGroup> 
 }))
 
-const renderMarkers = (meters:Array<MeterAttributes>, activeMeterNumber:string, handleClick:Function) => (meters.map((attrs) => {
+const renderMarkers = (meters:Array<MeterAttributes>, activeMeterNumber:string | undefined, handleClick:Function) => (meters.map((attrs) => {
   return <Marker 
     key={attrs.meter_number} 
-    active={activeMeterNumber && attrs.meter_number === activeMeterNumber}
+    active={!!activeMeterNumber && attrs.meter_number === activeMeterNumber}
     handleClick={handleClick}
     {...attrs} 
   />
