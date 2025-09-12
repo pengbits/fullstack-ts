@@ -16,6 +16,9 @@ a clone of the nyc parking app.
 - drizzle or prisma?
 - jest and supertest
 
+
+### get started
+pull down the repo locally and install node dependencies. node 20 required.
 ```
 npm run dev # starts vite and express server in parallel with concurrently
 ```
